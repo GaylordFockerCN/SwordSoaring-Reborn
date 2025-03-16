@@ -9,15 +9,15 @@ import java.util.Map;
 
 public class VatanseverStormArmature extends Armature {
     public final List<Joint> rootJoints = new ArrayList<>();
-    public final List<Joint> wanJoints;
 
     public VatanseverStormArmature(int jointNumber, Joint rootJoint, Map<String, Joint> jointMap) {
         super(jointNumber, rootJoint, jointMap);
         rootJoints.add(getOrLogException(jointMap, "root_1"));
         for(int i = 1; i <= 15; i++){
-            rootJoints.add(getOrLogException(jointMap, "root_1." + String.format("%03d", i)));
+            if (i!=9){
+                rootJoints.add(getOrLogException(jointMap, "root_1." + String.format("%03d", i)));
+            }
         }
-        wanJoints = rootJoints.subList(0, 7);
     }
 
 }
