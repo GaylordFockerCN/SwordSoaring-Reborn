@@ -48,6 +48,7 @@ import yesman.epicfight.world.capabilities.entitypatch.LivingEntityPatch;
 import yesman.epicfight.world.capabilities.entitypatch.player.ServerPlayerPatch;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
 
@@ -354,6 +355,13 @@ public class VatanseverAnimations {
                                     manager.setDataSync(VatanseverPassive.SWORD_COUNT, vatanseverEntityPatch.getLeftSwordCount() - 1, serverPlayerPatch.getOriginal());
                                 }
                             }
+                        } else {
+                            //否则重置状态
+                            Iterator<?> iterator = ssPlayer.getVatanseverShootEntities().iterator();
+                            while (iterator.hasNext()){
+                                iterator.remove();
+                            }
+                            serverPlayerPatch.getSkill(SkillSlots.WEAPON_INNATE).getDataManager().setDataSync(VatanseverPassive.SWORD_COUNT, 6, serverPlayerPatch.getOriginal());
                         }
                     });
                 }
