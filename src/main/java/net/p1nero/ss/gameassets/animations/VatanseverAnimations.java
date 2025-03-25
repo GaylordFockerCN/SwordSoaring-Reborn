@@ -469,7 +469,7 @@ public class VatanseverAnimations {
                     entity.setDeltaMovement(Vec3.ZERO);
                 }
                 if(entity.distanceTo(source) < damageRadius){
-                    entity.hurt(DamageSource.indirectMagic(source, source), damage);
+                    entity.hurt(DamageSource.mobAttack(source), damage);
                 }
             });
         } else {
@@ -519,7 +519,7 @@ public class VatanseverAnimations {
         for (LivingEntity entity : new ArrayList<>(entities)) {
             if (entity.invulnerableTime >= 0 && source != null) {
                 entity.invulnerableTime = 0;
-                entity.hurt(DamageSource.indirectMobAttack(source, (LivingEntity) source), damage*0.5F);
+                entity.hurt(DamageSource.indirectMobAttack(source, (LivingEntity) source), damage);
                 entity.invulnerableTime = 0;
                 entity.hurt(DamageSource.indirectMagic(source, source), damage);
                 entity.invulnerableTime = 0;

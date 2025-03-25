@@ -62,7 +62,7 @@ public class VatanseverStormAnimations {
                 .addEvents(AnimationEvent.TimePeriodEvent.create(0, 3, (entityPatch, self, params) -> {
                             stormVFX(entityPatch);
                             if (entityPatch instanceof VatanseverStormEntityPatch vatanseverStormEntityPatch) {
-                                stormDamage(vatanseverStormEntityPatch, 35, 2, 25);
+                                stormDamage(vatanseverStormEntityPatch, 35, 3, 25);
                             }
                         }
                         , AnimationEvent.Side.BOTH))
@@ -172,8 +172,6 @@ public class VatanseverStormAnimations {
             float y = baseY + yOffset;
             float z = baseZ + zOffset;
 
-            // 生成主粒子
-            world.addParticle(ParticleTypes.LARGE_SMOKE, true, x, y, z, rxv, ryv, rzv);
 
             // 5%概率生成下落线条
             if (random.nextFloat() < 0.05f) {
@@ -223,7 +221,7 @@ public class VatanseverStormAnimations {
             );
             for (LivingEntity entity : new ArrayList<>(entities)) {
                 if (entity.invulnerableTime == 0 && source != null) {
-                    entity.hurt(DamageSource.indirectMagic(source, source), damage);
+                    entity.hurt(DamageSource.indirectMobAttack(source,source), damage);
                     entity.invulnerableTime = 5;
                     if (!entity.level.isClientSide) {
                         entity.addEffect(new MobEffectInstance(MobEffects.BLINDNESS, 200, 0));
