@@ -361,7 +361,10 @@ public class VatanseverAnimations {
                             while (iterator.hasNext()){
                                 iterator.remove();
                             }
-                            serverPlayerPatch.getSkill(SkillSlots.WEAPON_INNATE).getDataManager().setDataSync(VatanseverPassive.SWORD_COUNT, 6, serverPlayerPatch.getOriginal());
+                            SkillDataManager manager = serverPlayerPatch.getSkill(SkillSlots.WEAPON_PASSIVE).getDataManager();
+                            if(manager.hasData(VatanseverPassive.SWORD_COUNT)){
+                                manager.setDataSync(VatanseverPassive.SWORD_COUNT, 6, serverPlayerPatch.getOriginal());
+                            }
                         }
                     });
                 }
