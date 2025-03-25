@@ -203,7 +203,7 @@ public class FlySwordEntity extends AbstractSwordEntity {
                 }
 
                 if (entity.invulnerableTime == 0) {
-                    entity.hurt(DamageSource.indirectMagic(getOwner(), getOwner()), (float) baseDamage);
+                    entity.hurt(DamageSource.indirectMobAttack(getOwner(), getOwner()), (float) baseDamage);
                     entity.invulnerableTime = 10;
                     if (!entity.level.isClientSide) {
                         entity.addEffect(new MobEffectInstance(MobEffects.BLINDNESS, 200, 0));
