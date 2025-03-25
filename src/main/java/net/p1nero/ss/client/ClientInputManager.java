@@ -5,6 +5,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.InputEvent;
+import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.p1nero.ss.SwordSoaring;
@@ -28,13 +29,23 @@ import java.util.List;
 @Mod.EventBusSubscriber(modid = SwordSoaring.MOD_ID, value = {Dist.CLIENT})
 public class ClientInputManager {
 
+    private static long lastPress;
+
+    @SubscribeEvent
+    public static void onMouseInput(TickEvent.ClientTickEvent event) {
+        if(event.phase.equals(TickEvent.Phase.END)){
+            if(Minecraft.getInstance().player != null && Minecraft.getInstance().screen == null){
+                while (SwordSoaringKeyMappings.TAKE_OFF.consumeClick()){
+                    takeOffKeyPressed();
+                }
+            }
+        }
+    }
+
     @SubscribeEvent
     public static void onMouseInput(InputEvent.MouseInputEvent event) {
 
         if(Minecraft.getInstance().player != null && Minecraft.getInstance().screen == null){
-            if(event.getButton() == SwordSoaringKeyMappings.TAKE_OFF.getKey().getValue()){
-                takeOffKeyPressed(event.getAction());
-            }
             if(event.getButton() == SwordSoaringKeyMappings.SWITCH_MODE.getKey().getValue()){
                 switchModeKeyPressed(event.getAction());
             }
@@ -50,9 +61,6 @@ public class ClientInputManager {
     @SubscribeEvent
     public static void onKeyInput(InputEvent.KeyInputEvent event){
         if(Minecraft.getInstance().player != null && Minecraft.getInstance().screen == null){
-            if(event.getKey() == SwordSoaringKeyMappings.TAKE_OFF.getKey().getValue()){
-                takeOffKeyPressed(event.getAction());
-            }
             if(event.getKey() == SwordSoaringKeyMappings.SWITCH_MODE.getKey().getValue()){
                 switchModeKeyPressed(event.getAction());
             }
@@ -65,10 +73,12 @@ public class ClientInputManager {
         }
     }
 
-    public static void takeOffKeyPressed(int action){
-        if(action == 1){
+    public static void takeOffKeyPressed(){
+        long currentTime = System.currentTimeMillis();
+        if(currentTime - lastPress < 200){
             sendSkillPacket(SwordSoaringSkillSlots.SWORD_SOARING, SwordSoaringKeyMappings.TAKE_OFF);
         }
+        lastPress = System.currentTimeMillis();
     }
 
     public static void swordSkillKeyPressed(int action){
