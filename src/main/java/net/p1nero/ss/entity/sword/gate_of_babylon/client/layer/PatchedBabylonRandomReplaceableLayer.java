@@ -32,8 +32,8 @@ public class PatchedBabylonRandomReplaceableLayer<E extends BabylonEntity, T ext
         super(null);
     }
     public static final int FADE_TIME = 20, LIFE_TIME = 130;
-    public static final ResourceLocation LIGHT_TEXTURE = new ResourceLocation(SwordSoaring.MOD_ID, "textures/entity/light.png");
-    public static final ResourceLocation PORTAL_TEXTURE = new ResourceLocation(SwordSoaring.MOD_ID, "textures/entity/portal.png");
+    public static final ResourceLocation LIGHT_TEXTURE = new ResourceLocation(SwordSoaring.MOD_ID, "textures/entity/light_new.png");
+    public static final ResourceLocation PORTAL_TEXTURE = new ResourceLocation(SwordSoaring.MOD_ID, "textures/entity/portal_new.png");
 
     @Override
     protected void renderLayer(T entityPatch, E entity, RenderLayer<E, M> vanillaLayer, PoseStack postStack, MultiBufferSource buffer, int packedLightIn, OpenMatrix4f[] poses, float bob, float yRot, float xRot, float partialTicks) {
@@ -76,25 +76,15 @@ public class PatchedBabylonRandomReplaceableLayer<E extends BabylonEntity, T ext
                         alpha = (LIFE_TIME - currentTickCount) * 1.0F / FADE_TIME;
                     }
                     final float outerAlpha = alpha;
-                    //画不断放大的圈圈
-                    if(currentTickCount < LIFE_TIME - FADE_TIME){
-                        alpha = (currentTickCount * 1.0F % FADE_TIME) / FADE_TIME;
-                        poseStack.pushPose();
-                        poseStack.scale(alpha, alpha, alpha);
-                        poseStack.pushPose();
-                        poseStack.scale(0.5F, 0.5F, 0.5F);
-                        renderPortal(poseStack, alpha, 1.0F, 1.0F, 1.0F, PORTAL_TEXTURE, buffer);
-                        poseStack.popPose();
-                        renderPortal(poseStack, alpha, 1.0F, 1.0F, 1.0F, LIGHT_TEXTURE, buffer);
-                        poseStack.popPose();
-                    }
-
+                    float frame = currentTickCount * 1.0F % 20;
                     //画核心圈圈
+
+
                     poseStack.pushPose();
                     poseStack.scale(outerAlpha, outerAlpha, outerAlpha);
-                    renderPortal(poseStack, alpha, 1.0F, 1.0F, 1.0F, LIGHT_TEXTURE, buffer);
-                    poseStack.scale(0.5F, 0.5F, 0.5F);
-                    renderPortal(poseStack, outerAlpha, 1.0F, 1.0F, 1.0F, PORTAL_TEXTURE, buffer);
+                    poseStack.scale(0.7F, 0.7F, 0.7F);
+                    renderPortal(poseStack, 0.5F, 1.0F, 1.0F, 1.0F, LIGHT_TEXTURE, buffer,frame);
+                    renderPortal(poseStack, 1, 1.0F, 1.0F, 1.0F, PORTAL_TEXTURE, buffer,frame);
                     poseStack.popPose();
 
                     poseStack.popPose();
@@ -114,15 +104,15 @@ public class PatchedBabylonRandomReplaceableLayer<E extends BabylonEntity, T ext
     /**
      * 曦月哥的恩情还不完\ToT/  \ToT/  \ToT/  \ToT/
      */
-    public static void renderPortal(PoseStack poseStack, float alpha, float r, float g, float b, ResourceLocation portalTexture, MultiBufferSource buffer) {
+    public static void renderPortal(PoseStack poseStack, float alpha, float r, float g, float b, ResourceLocation portalTexture, MultiBufferSource buffer,float frame) {
         poseStack.pushPose();
         Matrix4f pMatrix = poseStack.last().pose();
         Matrix3f normal = poseStack.last().normal();
         VertexConsumer consumer = buffer.getBuffer(RenderType.entityTranslucent(portalTexture, false));
-        consumer.vertex(pMatrix, -1, -1, 0).color(r, g, b, alpha).uv(0, 0).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(LightTexture.FULL_BRIGHT).normal(normal,1,1,1).endVertex();
-        consumer.vertex(pMatrix, 1, -1, 0).color(r, g, b, alpha).uv(1, 0).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(LightTexture.FULL_BRIGHT).normal(normal, 1,1,1).endVertex();
-        consumer.vertex(pMatrix, 1, 1, 0).color(r, g, b, alpha).uv(1, 1).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(LightTexture.FULL_BRIGHT).normal(normal, 1,1,1).endVertex();
-        consumer.vertex(pMatrix, -1, 1, 0).color(r, g, b, alpha).uv(0, 1).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(LightTexture.FULL_BRIGHT).normal(normal, 1,1,1).endVertex();
+        consumer.vertex(pMatrix, -1, -1, 0).color(r, g, b, alpha).uv(0, 0.05F*frame-0.05F).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(LightTexture.FULL_BRIGHT).normal(0, 0,1).endVertex();
+        consumer.vertex(pMatrix, 1, -1, 0).color(r, g, b, alpha).uv(1, 0.05F*frame-0.05F).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(LightTexture.FULL_BRIGHT).normal(0, 0,1).endVertex();
+        consumer.vertex(pMatrix, 1, 1, 0).color(r, g, b, alpha).uv(1, 0.05F*frame).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(LightTexture.FULL_BRIGHT).normal(0, 0,1).endVertex();
+        consumer.vertex(pMatrix, -1, 1, 0).color(r, g, b, alpha).uv(0, 0.05F*frame).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(LightTexture.FULL_BRIGHT).normal( 0, 0,1).endVertex();
 
         poseStack.popPose();
     }
