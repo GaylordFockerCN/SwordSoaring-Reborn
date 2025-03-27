@@ -6,8 +6,6 @@ import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
-import net.minecraft.sounds.SoundSource;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.phys.Vec3;
 import net.p1nero.ss.animation.ArtifactSpiritMultiPhaseAttackAnimation;
 import net.p1nero.ss.entity.sword.screen_sword.ScreenSwordArmature;
@@ -29,6 +27,8 @@ import yesman.epicfight.particle.EpicFightParticles;
 import java.util.List;
 import java.util.Random;
 import java.util.function.Supplier;
+
+import static net.p1nero.ss.util.AnimationUtils.*;
 
 public class ScreenSwordAnimations {
     public static StaticAnimation SCREEN_SWORD_IDLE;
@@ -166,13 +166,13 @@ public class ScreenSwordAnimations {
         HumanoidArmature biped = Armatures.BIPED;
         PLAYER_SUMMON_RAIN_SWORD = new ActionAnimation(0.15F, "screen_sword/rain_sword_summon_player", biped)
                 .addEvents(AnimationEvent.TimeStampedEvent.create(0.7F, ((livingEntityPatch, staticAnimation, objects) -> {
-                    VatanseverAnimations.groundSplit(livingEntityPatch, 0, 0, 0, 0, 0, 2, 0);
+                    groundSplit(livingEntityPatch, 0, 0, 0, 0, 0, 2, 0);
                 }), AnimationEvent.Side.BOTH),
                         spawnSummonParticle(0.5F, () -> ParticleTypes.END_ROD, () -> ParticleTypes.WAX_OFF),
                         spawnSummonParticle(2.3F, () -> ParticleTypes.END_ROD, () -> ParticleTypes.CLOUD));
         PLAYER_SUMMON_SCREEN_SWORD = new ActionAnimation(0.15F, "screen_sword/screen_sword_summon_player", biped)
                 .addEvents(AnimationEvent.TimeStampedEvent.create(0.7F, ((livingEntityPatch, staticAnimation, objects) -> {
-                    VatanseverAnimations.groundSplit(livingEntityPatch, 0, 0, 0, 0, 0, 2, 0);
+                    groundSplit(livingEntityPatch, 0, 0, 0, 0, 0, 2, 0);
                     ParticleVFX.createSphereParticles(livingEntityPatch.getOriginal().level, livingEntityPatch.getOriginal().getEyePosition(), ParticleTypes.END_ROD, 5, 0.1, 0.2, 100);
                 }), AnimationEvent.Side.BOTH),
                         spawnSummonParticle(2.3F, () -> ParticleTypes.END_ROD, () -> ParticleTypes.CLOUD),
@@ -181,7 +181,7 @@ public class ScreenSwordAnimations {
                         setGlowing(1.7F));
         PLAYER_SUMMON_KILL_AURA_1 = new ActionAnimation(0.15F, "screen_sword/kill_aura_1_summon_player", biped)
                 .addEvents(AnimationEvent.TimeStampedEvent.create(0.7F, ((livingEntityPatch, staticAnimation, objects) -> {
-                    VatanseverAnimations.groundSplit(livingEntityPatch, 0, 0, 0, 0, 0, 2, 0);
+                    groundSplit(livingEntityPatch, 0, 0, 0, 0, 0, 2, 0);
                 }), AnimationEvent.Side.BOTH),
                         playSound(0.25F, ()->SoundEvents.AMETHYST_CLUSTER_STEP, 0, 0.1F, 0.6F),
                         playSound(0.45F, ()->SoundEvents.AMETHYST_CLUSTER_STEP, 0, 0.5F, 0.8F),
@@ -193,7 +193,7 @@ public class ScreenSwordAnimations {
                         spawnSummonParticle(2.3F, () -> ParticleTypes.END_ROD, () -> ParticleTypes.WAX_OFF));
         PLAYER_SUMMON_KILL_AURA_2 = new ActionAnimation(0.15F, "screen_sword/kill_aura_2_summon_player", biped)
                 .addEvents(AnimationEvent.TimeStampedEvent.create(0.7F, ((livingEntityPatch, staticAnimation, objects) -> {
-                    VatanseverAnimations.groundSplit(livingEntityPatch, 0, 0, 0, 0, 0, 2, 0);
+                    groundSplit(livingEntityPatch, 0, 0, 0, 0, 0, 2, 0);
                 }), AnimationEvent.Side.BOTH),
                         AnimationEvent.TimeStampedEvent.create(0.7F, ((livingEntityPatch, staticAnimation, objects) -> livingEntityPatch.playSound(SoundEvents.FIRE_EXTINGUISH, 0.0F, 0.3F)), AnimationEvent.Side.SERVER),
                         spawnSummonParticle(0.5F, () -> ParticleTypes.FLAME, () -> ParticleTypes.LAVA),

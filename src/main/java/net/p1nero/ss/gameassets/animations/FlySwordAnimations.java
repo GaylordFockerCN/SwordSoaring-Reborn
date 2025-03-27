@@ -1,21 +1,9 @@
 package net.p1nero.ss.gameassets.animations;
 
-import net.minecraft.server.level.ServerLevel;
-import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.effect.MobEffectInstance;
-import net.minecraft.world.effect.MobEffects;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.phys.AABB;
-import net.minecraft.world.phys.Vec3;
 import net.p1nero.ss.animation.AutoDiscardActionAnimation;
 import net.p1nero.ss.animation.AutoDiscardAttackAnimation;
-import net.p1nero.ss.entity.AbstractArtifactSpiritEntity;
 import net.p1nero.ss.entity.sword.fly_sword.FlySwordArmature;
 import net.p1nero.ss.entity.sword.fly_sword.FlySwordEntity;
-import net.p1nero.ss.entity.sword.fly_sword.FlySwordPatch;
 import net.p1nero.ss.gameassets.SwordSoaringArmatures;
 import net.p1nero.ss.gameassets.SwordSoaringColliders;
 import yesman.epicfight.api.animation.property.AnimationEvent;
@@ -23,10 +11,10 @@ import yesman.epicfight.api.animation.property.AnimationProperty;
 import yesman.epicfight.api.animation.types.ActionAnimation;
 import yesman.epicfight.api.animation.types.AttackAnimation;
 import yesman.epicfight.api.animation.types.StaticAnimation;
-import yesman.epicfight.world.capabilities.entitypatch.LivingEntityPatch;
 
-import java.util.ArrayList;
 import java.util.List;
+
+import static net.p1nero.ss.util.AnimationUtils.*;
 
 public class FlySwordAnimations {
     public static StaticAnimation FLY_SWORD_ATK_1;
@@ -65,7 +53,7 @@ public class FlySwordAnimations {
                 .addProperty(AnimationProperty.StaticAnimationProperty.PLAY_SPEED_MODIFIER, ((dynamicAnimation, livingEntityPatch, v, v1) -> 0.5F))
                 .addEvents(AnimationProperty.StaticAnimationProperty.ON_END_EVENTS, SET_ANIMATION_END)
                 .addEvents(AnimationEvent.TimeStampedEvent.create(1.3F, ((livingEntityPatch, staticAnimation, objects) ->
-                        VatanseverAnimations.groundSplit(livingEntityPatch, 0, 0, 0, 0, VatanseverAnimations.getTotalAttackDamage(livingEntityPatch) * 5, 3, 500)), AnimationEvent.Side.BOTH));
+                        groundSplit(livingEntityPatch, 0, 0, 0, 0, VatanseverAnimations.getTotalAttackDamage(livingEntityPatch) * 5, 3, 500)), AnimationEvent.Side.BOTH));
         FLY_SWORD_ATK_2 = new AttackAnimation(0.15F, "fly_sword/fly_sword_atk_2", flySwordArmature,
                 new AttackAnimation.Phase(0.0F, 0.1F, 0.2F, 0.2F, 0.2F, flySwordArmature.body, SwordSoaringColliders.FLY_SWORD_COMMON),
                 new AttackAnimation.Phase(0.2F, 0.2F, 0.4F, 0.4F, 0.4F, flySwordArmature.body, SwordSoaringColliders.FLY_SWORD_COMMON),
@@ -77,7 +65,7 @@ public class FlySwordAnimations {
                 .addProperty(AnimationProperty.StaticAnimationProperty.PLAY_SPEED_MODIFIER, ((dynamicAnimation, livingEntityPatch, v, v1) -> 0.5F))
                 .addEvents(AnimationProperty.StaticAnimationProperty.ON_END_EVENTS, SET_ANIMATION_END)
                 .addEvents(AnimationEvent.TimeStampedEvent.create(1.3F, ((livingEntityPatch, staticAnimation, objects) ->
-                        VatanseverAnimations.groundSplit(livingEntityPatch, 0, 0, 0, 0, VatanseverAnimations.getTotalAttackDamage(livingEntityPatch) * 5, 3, 500)), AnimationEvent.Side.BOTH));
+                        groundSplit(livingEntityPatch, 0, 0, 0, 0, VatanseverAnimations.getTotalAttackDamage(livingEntityPatch) * 5, 3, 500)), AnimationEvent.Side.BOTH));
         FLY_SWORD_ATK_3 = new AutoDiscardAttackAnimation(0.15F, "fly_sword/fly_sword_atk_3", flySwordArmature,
                 new AttackAnimation.Phase(0.0F, 0.0F, 1, 1, 1, flySwordArmature.body, SwordSoaringColliders.FLY_SWORD_COMMON))
                 .addProperty(AnimationProperty.ActionAnimationProperty.MOVE_VERTICAL, true)
