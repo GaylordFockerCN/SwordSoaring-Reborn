@@ -1,0 +1,28 @@
+{
+	"trail_effects": [
+		{
+			"start_time": 0.9,
+			"end_time": 1.2,
+			"lifetime": 4,
+			"interpolations": 6,
+			"joint": "S_1_R",
+			"item_skin_hand": "main_hand"
+		},
+		{
+			"start_time": 0.9,
+			"end_time": 1.2,
+			"lifetime": 4,
+			"interpolations": 6,
+			"joint": "S_2_R",
+			"item_skin_hand": "main_hand"
+		},
+		{
+			"start_time": 0.9,
+			"end_time": 1.2,
+			"lifetime": 4,
+			"interpolations": 6,
+			"joint": "S_3_R",
+			"item_skin_hand": "main_hand"
+		}
+	]
+}

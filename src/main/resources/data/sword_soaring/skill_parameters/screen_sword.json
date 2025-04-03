@@ -1,0 +1,7 @@
+{
+    "cooldown": 500,
+    "life_time": 300,
+    "protect_count": 36,
+    "heal_count": 4.0,
+    "xp_requirement": 3
+}

@@ -1,0 +1,51 @@
+{
+  "parent": "item/generated",
+  "textures":
+  {
+    "layer0" : "epicfight:item/skillbook"
+  },
+  "overrides": [
+    {
+      "predicate": {
+        "sword_soaring:skill": 1
+      },
+      "model": "epicfight:item/skillbook_guard"
+    },
+    {
+      "predicate": {
+        "sword_soaring:skill": 2
+      },
+      "model": "epicfight:item/skillbook_passive"
+    },
+    {
+      "predicate": {
+        "sword_soaring:skill": 3
+      },
+      "model": "epicfight:item/skillbook_dodge"
+    },
+    {
+      "predicate": {
+        "sword_soaring:skill": 4
+      },
+      "model": "epicfight:item/skillbook_identity"
+    },
+    {
+      "predicate": {
+        "sword_soaring:skill": 5
+      },
+      "model": "epicfight:item/skillbook_mover"
+    },
+    {
+      "predicate": {
+        "sword_soaring:skill": 6
+      },
+      "model": "epicfight:item/skillbook_fly_skill"
+    },
+    {
+      "predicate": {
+        "sword_soaring:skill": 7
+      },
+      "model": "epicfight:item/skillbook_sword_controller"
+    }
+  ]
+}

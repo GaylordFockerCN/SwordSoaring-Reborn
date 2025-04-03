@@ -1,0 +1,27 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "compatibilityLevel": "JAVA_17",
+  "package": "net.p1nero.ss.mixin",
+  "client": [
+    "ControlEngineAccessor",
+    "GameRendererMixin",
+    "LocalPlayerPatchMixin",
+    "RenderEngineMixin",
+    "TrailParticleMixin"
+  ],
+  "mixins": [
+    "ColliderMixin",
+    "EntityMixin",
+    "JsonModelLoaderMixin",
+    "LivingEntityMixin",
+    "MultiOBBColliderMixin",
+    "OpenMatrix4fMixin",
+    "PlayerMixin",
+    "WeaponCapabilityMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  },
+  "refmap": "sword_soaring.mixins.refmap.json"
+}
