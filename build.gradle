@@ -121,7 +121,6 @@ dependencies {
 
     implementation fg.deobf("dev.echoellet:controlify-forgified:${project.controlify_version}")
     runtimeOnly fg.deobf("maven.modrinth:yacl:3.6.6+1.20.1-forge") // Required to run Controlify (transitive dependency)
-    runtimeOnly fg.deobf("maven.modrinth:epic-fight-controlify:0.0.1-mc1.20.1-forge") // Optional for Epic Fight X Controlify integration (required on 1.20.1 only, built-in in Epic fight 1.21.1)
 }
 
 tasks.named('processResources', ProcessResources).configure {
