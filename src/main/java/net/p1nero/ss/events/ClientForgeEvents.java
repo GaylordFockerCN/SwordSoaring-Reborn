@@ -2,9 +2,11 @@ package net.p1nero.ss.events;
 
 
 import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.p1nero.ss.SwordSoaringMod;
+import net.p1nero.ss.client.SwordSoairngCameraManager;
 import net.p1nero.ss.gameassets.SwordSoaringDatakeys;
 import net.p1nero.ss.gameassets.SwordSoaringLivingMotions;
 import net.p1nero.ss.gameassets.SwordSoaringSkillSlots;
@@ -13,9 +15,7 @@ import net.p1nero.ss.gameassets.skills.FlyingSkills;
 import yesman.epicfight.api.animation.Animator;
 import yesman.epicfight.api.client.forgeevent.UpdatePlayerMotionEvent;
 import yesman.epicfight.api.forgeevent.InitAnimatorEvent;
-import yesman.epicfight.client.ClientEngine;
 import yesman.epicfight.client.world.capabilites.entitypatch.player.AbstractClientPlayerPatch;
-import yesman.epicfight.client.world.capabilites.entitypatch.player.LocalPlayerPatch;
 import yesman.epicfight.skill.SkillContainer;
 
 @Mod.EventBusSubscriber(modid = SwordSoaringMod.MOD_ID, value = Dist.CLIENT)
@@ -82,4 +82,11 @@ public class ClientForgeEvents {
         }
     }
 
+    @SubscribeEvent
+    public static void onClientTick(TickEvent.ClientTickEvent event) {
+        if(event.phase == TickEvent.Phase.END) {
+            return;
+        }
+        SwordSoairngCameraManager.tick();
+    }
 }

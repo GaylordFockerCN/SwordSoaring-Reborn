@@ -9,46 +9,43 @@ import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.client.event.ViewportEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.common.Mod;
-import net.p1nero.ss.SwordSoaringMod;
+import yesman.epicfight.api.client.camera.EpicFightCameraAPI;
 import yesman.epicfight.api.utils.math.OpenMatrix4f;
 import yesman.epicfight.api.utils.math.Vec3f;
-import yesman.epicfight.client.ClientEngine;
+import yesman.epicfight.client.world.capabilites.entitypatch.player.LocalPlayerPatch;
+import yesman.epicfight.world.capabilities.EpicFightCapabilities;
 
 /**
  * 抄ef原版的调视角，改了个方向，注意要取消动画的turning lock才不会被打断
  */
-@Mod.EventBusSubscriber(modid = SwordSoaringMod.MOD_ID, value = Dist.CLIENT)
-public class CameraAnim {
+public class SwordSoairngCameraManager {
     public static final Vec3f DEFAULT_AIMING_CORRECTION = new Vec3f(1.5F, 0.0F, 1.25F);
+    private static final double DEFAULT_CAMERA_ZOOM = 6;
     private static Vec3f aimingCorrection = DEFAULT_AIMING_CORRECTION;
-    private static final int ZOOM_MAX_COUNT = 60;
-    private static boolean aiming;
+    private static final int MAX_ZOOM_TICK = 60;
+    private static boolean zooming;
     private static int zoomOutTimer = 0;
-    private static int zoomCount;
+    private static int zoomTick;
 
     public static boolean isZooming() {
         return zoomOutTimer > 0;
     }
 
     public static void zoomIn(Vec3f aimingCorrection, int timer) {
-        aiming = true;
-        zoomCount = zoomCount == 0 ? 1 : zoomCount;
+        zooming = true;
+        zoomTick = zoomTick == 0 ? 1 : zoomTick;
         zoomOutTimer = timer;
-        CameraAnim.aimingCorrection = aimingCorrection;
+        SwordSoairngCameraManager.aimingCorrection = aimingCorrection;
     }
     public static void zoomIn(Vec3f aimingCorrection) {
-        aiming = true;
-        zoomCount = zoomCount == 0 ? 1 : zoomCount;
+        zooming = true;
+        zoomTick = zoomTick == 0 ? 1 : zoomTick;
         zoomOutTimer = 0;
-        CameraAnim.aimingCorrection = aimingCorrection;
+        SwordSoairngCameraManager.aimingCorrection = aimingCorrection;
     }
 
     public static void zoomOut(){
-        aiming = false;
+        zooming = false;
         zoomOutTimer = 0;
     }
 
@@ -56,30 +53,26 @@ public class CameraAnim {
         zoomOutTimer = timer;
     }
 
-    /**
-     * 实现过渡
-     */
-    @SubscribeEvent
-    public static void cameraSetupEvent(ViewportEvent.ComputeCameraAngles event) {
-        if (zoomCount > 0) {
-            setCameraAnimThirdPerson(event, Minecraft.getInstance().options.getCameraType(), event.getPartialTick());
+    public static void onCameraSetupEnd(EpicFightCameraAPI cameraApi, Camera camera, float partialTick) {
+        if (zoomTick > 0) {
+            setCameraAnimThirdPerson(cameraApi, camera, Minecraft.getInstance().options.getCameraType(), partialTick);
+        }
+    }
+
+    public static void tick() {
+        if (zoomTick > 0) {
             if(!Minecraft.getInstance().isPaused()) {
-                zoomCount = aiming ? zoomCount + 1 : zoomCount - 1;
-                zoomCount = Math.min(ZOOM_MAX_COUNT, zoomCount);
+                zoomTick = zooming ? zoomTick + 1 : zoomTick - 1;
+                zoomTick = Math.min(MAX_ZOOM_TICK, zoomTick);
                 zoomOutTimer--;
                 if(zoomOutTimer < 0){
-                    aiming = false;
+                    zooming = false;
                 }
             }
         }
     }
 
-    private static void setCameraAnimThirdPerson(ViewportEvent.ComputeCameraAngles event, CameraType pov, double partialTicks) {
-        if (ClientEngine.getInstance().getPlayerPatch() == null || Minecraft.getInstance().level == null) {
-            return;
-        }
-
-        Camera camera = event.getCamera();
+    private static void setCameraAnimThirdPerson(EpicFightCameraAPI cameraAPI, Camera camera, CameraType pov, float partialTicks) {
         Entity entity = Minecraft.getInstance().getCameraEntity();
         if(entity == null){
             return;
@@ -96,9 +89,9 @@ public class CameraAnim {
             double entityPosX = entity.xOld + (entity.getX() - entity.xOld) * partialTicks;
             double entityPosY = entity.yOld + (entity.getY() - entity.yOld) * partialTicks + entity.getEyeHeight();
             double entityPosZ = entity.zOld + (entity.getZ() - entity.zOld) * partialTicks;
-            float intpol = (float) zoomCount / (float) ZOOM_MAX_COUNT;
+            float intpol = (float) zoomTick / (float) MAX_ZOOM_TICK;
             Vec3f interpolatedCorrection = new Vec3f(aimingCorrection.x * intpol, aimingCorrection.y * intpol, aimingCorrection.z * intpol);
-            OpenMatrix4f rotationMatrix = ClientEngine.getInstance().getPlayerPatch().getMatrix((float)partialTicks);
+            OpenMatrix4f rotationMatrix = EpicFightCapabilities.getEntityPatch(Minecraft.getInstance().player, LocalPlayerPatch.class).getModelMatrix(partialTicks);
             Vec3f rotateVec = OpenMatrix4f.transform3v(rotationMatrix, interpolatedCorrection, null);
             double d3 = Math.sqrt((rotateVec.x * rotateVec.x) + (rotateVec.y * rotateVec.y) + (rotateVec.z * rotateVec.z));
             double smallest = d3;
@@ -127,7 +120,7 @@ public class CameraAnim {
             totalZ += rotateVec.z * dist;
         }
 
-        BlockPos cameraPos= new BlockPos((int) totalX, (int) totalY, (int) totalZ);
+        BlockPos cameraPos = new BlockPos((int) totalX, (int) totalY, (int) totalZ);
         //防止视角卡墙里
         if(Minecraft.getInstance().level.getBlockState(cameraPos).is(Blocks.AIR)){
             camera.setPosition(totalX, totalY, totalZ);
