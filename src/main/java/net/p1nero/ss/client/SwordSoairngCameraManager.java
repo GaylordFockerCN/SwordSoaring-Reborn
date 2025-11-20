@@ -3,13 +3,17 @@ package net.p1nero.ss.client;
 import net.minecraft.client.Camera;
 import net.minecraft.client.CameraType;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.core.BlockPos;
+import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import yesman.epicfight.api.client.camera.EpicFightCameraAPI;
+import yesman.epicfight.api.utils.math.MathUtils;
 import yesman.epicfight.api.utils.math.OpenMatrix4f;
 import yesman.epicfight.api.utils.math.Vec3f;
 import yesman.epicfight.client.world.capabilites.entitypatch.player.LocalPlayerPatch;
@@ -36,17 +40,16 @@ public class SwordSoairngCameraManager {
         zoomTick = zoomTick == 0 ? 1 : zoomTick;
         zoomOutTimer = timer;
         SwordSoairngCameraManager.aimingCorrection = aimingCorrection;
+        EpicFightCameraAPI.getInstance().setCouplingState(true);
     }
     public static void zoomIn(Vec3f aimingCorrection) {
-        zooming = true;
-        zoomTick = zoomTick == 0 ? 1 : zoomTick;
-        zoomOutTimer = 0;
-        SwordSoairngCameraManager.aimingCorrection = aimingCorrection;
+        zoomIn(aimingCorrection, 0);
     }
 
     public static void zoomOut(){
         zooming = false;
-        zoomOutTimer = 0;
+        zoomOutTimer = -1;
+        EpicFightCameraAPI.getInstance().setCouplingState(false);
     }
 
     public static void zoomOut(int timer) {
@@ -66,9 +69,12 @@ public class SwordSoairngCameraManager {
                 zoomTick = Math.min(MAX_ZOOM_TICK, zoomTick);
                 zoomOutTimer--;
                 if(zoomOutTimer < 0){
-                    zooming = false;
+                    zoomOut();
                 }
             }
+//            if(EpicFightCameraAPI.getInstance().isTPSMode()) {
+//                EpicFightCameraAPI.getInstance().alignPlayerLookToCamera();
+//            }
         }
     }
 
@@ -91,8 +97,12 @@ public class SwordSoairngCameraManager {
             double entityPosZ = entity.zOld + (entity.getZ() - entity.zOld) * partialTicks;
             float intpol = (float) zoomTick / (float) MAX_ZOOM_TICK;
             Vec3f interpolatedCorrection = new Vec3f(aimingCorrection.x * intpol, aimingCorrection.y * intpol, aimingCorrection.z * intpol);
-            OpenMatrix4f rotationMatrix = EpicFightCapabilities.getEntityPatch(Minecraft.getInstance().player, LocalPlayerPatch.class).getModelMatrix(partialTicks);
+
+            float yRotO = cameraAPI.getCameraYRotO();
+            float yRot = cameraAPI.getCameraYRot();
+            OpenMatrix4f rotationMatrix = MathUtils.getModelMatrixIntegral(0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, yRotO, yRot, partialTicks, 0.9375F, 0.9375F, 0.9375F);
             Vec3f rotateVec = OpenMatrix4f.transform3v(rotationMatrix, interpolatedCorrection, null);
+
             double d3 = Math.sqrt((rotateVec.x * rotateVec.x) + (rotateVec.y * rotateVec.y) + (rotateVec.z * rotateVec.z));
             double smallest = d3;
             double d00 = posX + rotateVec.x;
