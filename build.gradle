@@ -5,17 +5,21 @@ plugins {
     id 'net.minecraftforge.gradle' version '[6.0,6.2)'
     id 'org.parchmentmc.librarian.forgegradle' version '1.+'
     id 'org.spongepowered.mixin' version '0.7.+'
+    id("me.modmuss50.mod-publish-plugin") version "1.1.0"
 }
 
 version = mod_version
 group = mod_group_id
 
 base {
-    archivesName = mod_id + "-forge1.20.1"
+    archivesName = mod_id
+    version = getFullModVersion()
 }
 
-// Mojang ships Java 17 to end users in 1.18+, so your mod should target Java 17.
-java.toolchain.languageVersion = JavaLanguageVersion.of(17)
+java {
+    toolchain.languageVersion.set(JavaLanguageVersion.of(17))
+    withSourcesJar()
+}
 
 println "Java: ${System.getProperty 'java.version'}, JVM: ${System.getProperty 'java.vm.version'} (${System.getProperty 'java.vendor'}), Arch: ${System.getProperty 'os.arch'}"
 minecraft {
@@ -106,7 +110,7 @@ dependencies {
     implementation fg.deobf("libs:epicfight:20.14.0.8")
 //    implementation fg.deobf("maven.modrinth:epic-fight:${epicfight_version}")
     implementation fg.deobf("maven.modrinth:epic-fight-skill-tree:${epicskills_version}")
-    implementation fg.deobf("curse.maven:epic-fight-invincible-1184379:7191740")
+    implementation fg.deobf("maven.modrinth:epic-fight-invincible-lib:${invincible_lib_version}")
 
     implementation fg.deobf("curse.maven:epic-fight-avalon-1268823:7058350")
     implementation fg.deobf("curse.maven:mmmmmmmmmmmm-225738:6237015")
@@ -122,7 +126,6 @@ dependencies {
 
     implementation fg.deobf("dev.echoellet:controlify-forgified:${project.controlify_version}")
     runtimeOnly fg.deobf("maven.modrinth:yacl:3.6.6+1.20.1-forge") // Required to run Controlify (transitive dependency)
-//    runtimeOnly fg.deobf("maven.modrinth:epic-fight-controlify:0.0.1-mc1.20.1-forge") // Optional for Epic Fight X Controlify integration (required on 1.20.1 only, built-in in Epic fight 1.21.1)
 }
 
 tasks.named('processResources', ProcessResources).configure {
@@ -174,4 +177,52 @@ publishing {
 
 tasks.withType(JavaCompile).configureEach {
     options.encoding = 'UTF-8' // Use the UTF-8 charset for Java compilation
+}
+
+def getFullModVersion() {
+    return "${mod_version}-mc${minecraft_version}-forge"
+}
+
+publishMods {
+    def releaseNotesFile = project.file("RELEASE_NOTES.md")
+    def releaseNotesContent = releaseNotesFile.text
+
+    changelog = """
+|**Tested against:**
+|- **Forge:** ${forge_version}
+|- **Minecraft:** ${minecraft_version}
+|- **Epic Fight:** ${epicfight_version}
+|- **Epic Fight - Invincible Lib:** ${invincible_lib_version}
+|- **Epic Fight: Skill Tree:** ${epicskills_version}
+|
+|${releaseNotesContent}
+""".stripMargin().trim()
+
+    modLoaders.add("forge")
+    type = STABLE
+    displayName = getFullModVersion()
+    file = tasks.jar.archiveFile
+    additionalFiles.from(sourcesJar)
+
+    curseforge {
+        accessToken = System.getenv("CURSEFORGE_TOKEN")
+        projectId = "1011068"
+        minecraftVersions.add(minecraft_version)
+        projectSlug = "sword-soaring"
+
+        requires("epic-fight-mod")
+        requires("epic-fight-invincible")
+    }
+
+    modrinth {
+        accessToken = System.getenv("MODRINTH_TOKEN")
+        projectId = "oP1of4Wn"
+        minecraftVersions.add(minecraft_version)
+
+        requires("epic-fight")
+        requires("epic-fight-invincible-lib")
+
+        // Syncs the GitHub README with the Modrinth project description
+        // projectDescription = file("README.md").text
+    }
 }
