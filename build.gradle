@@ -103,11 +103,10 @@ dependencies {
 //            jarJar.ranged(it, "[0.5.0,)")
 //        }
 //    }
-    implementation fg.deobf("libs:epicfight:20.14.0.8")
+    implementation fg.deobf("libs:epicfight:20.14.0.11")
 //    implementation fg.deobf("maven.modrinth:epic-fight:${epicfight_version}")
     implementation fg.deobf("maven.modrinth:epic-fight-skill-tree:${epicskills_version}")
     implementation fg.deobf("curse.maven:epic-fight-invincible-1184379:7191740")
-
     implementation fg.deobf("curse.maven:epic-fight-avalon-1268823:7058350")
     implementation fg.deobf("curse.maven:mmmmmmmmmmmm-225738:6237015")
     implementation fg.deobf("curse.maven:selene-499980:6283242")
@@ -115,7 +114,7 @@ dependencies {
     implementation fg.deobf("curse.maven:sophisticated-backpacks-422301:6246607")
     implementation fg.deobf("curse.maven:armourers-workshop-229523:6965580")//唯一真神
 
-    implementation fg.deobf("curse.maven:shoulder-surfing-reloaded-243190:6993788")
+    compileOnly fg.deobf("curse.maven:shoulder-surfing-reloaded-243190:6993788")
 //    implementation fg.deobf("curse.maven:embeddium-908741:5681725")
 //    implementation fg.deobf("curse.maven:oculus-581495:6020952")
     implementation fg.deobf("curse.maven:xaeros-world-map-317780:6538337")
