@@ -16,7 +16,7 @@ import net.p1nero.ss.SwordSoaringMod;
 import net.p1nero.ss.gameassets.SwordSoaringDatakeys;
 import net.p1nero.ss.gameassets.SwordSoaringSkillSlots;
 import yesman.epicfight.api.client.camera.EpicFightCameraAPI;
-import yesman.epicfight.api.client.hook.instances.BuildCameraTransform;
+import yesman.epicfight.api.client.event.types.BuildCameraTransform;
 import yesman.epicfight.api.utils.math.MathUtils;
 import yesman.epicfight.api.utils.math.OpenMatrix4f;
 import yesman.epicfight.api.utils.math.Vec3f;
@@ -82,7 +82,7 @@ public class SwordSoairngCameraManager {
 
     public static void onEpicFightCameraSetupEnd(BuildCameraTransform.Post event) {
         if (zoomTick > 0 && EpicFightCameraAPI.getInstance().isTPSMode()) {
-            setCameraAnimThirdPerson(event.getEpicFightCameraAPI().getCameraYRotO(), event.getEpicFightCameraAPI().getCameraYRot(), event.getCamera(), Minecraft.getInstance().options.getCameraType(), event.getPartialTick());
+            setCameraAnimThirdPerson(event.getCameraApi().getCameraYRotO(), event.getCameraApi().getCameraYRot(), event.getCamera(), Minecraft.getInstance().options.getCameraType(), event.getPartialTick());
         }
     }
 
