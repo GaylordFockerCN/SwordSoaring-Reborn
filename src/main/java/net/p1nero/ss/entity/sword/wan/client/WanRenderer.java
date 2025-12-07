@@ -13,7 +13,7 @@ import org.jetbrains.annotations.NotNull;
 public class WanRenderer extends MobRenderer<AbstractArtifactSpiritEntity, EmptyEntityModel<AbstractArtifactSpiritEntity>> {
     public static final ResourceLocation TEXTURE = ResourceLocation.fromNamespaceAndPath(SwordSoaringMod.MOD_ID, "textures/entity/vatansever_swordgroup.png");
     public WanRenderer(EntityRendererProvider.Context context) {
-        super(context, new EmptyEntityModel<>(), 1);
+        super(context, new EmptyEntityModel<>(), 0);
         this.addLayer(new ReplaceableRenderLayer<>(this));
     }
 

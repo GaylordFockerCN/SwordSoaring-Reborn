@@ -28,9 +28,6 @@ public class SwordSoaringKeyMappings {
         event.register(ACCELERATION);
         event.register(SWORD_SKILL);
         event.register(SWORD_BACK);
-
-        InputManager.register(SwordSoaringComboTypes.KEY_SWORD_SKILL, SWORD_SKILL);
-        InputManager.register(SwordSoaringComboTypes.KEY_TAKE_OFF, TAKE_OFF);
     }
 
 }
