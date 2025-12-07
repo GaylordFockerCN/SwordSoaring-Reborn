@@ -167,4 +167,9 @@ public abstract class AbstractArtifactSpiritEntity extends PathfinderMob impleme
     public boolean isPushable() {
         return false;
     }
+
+    @Override
+    public boolean isPickable() {
+        return false;
+    }
 }

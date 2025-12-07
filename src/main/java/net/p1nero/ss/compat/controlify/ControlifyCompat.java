@@ -16,6 +16,7 @@ import net.p1nero.ss.client.keymapping.SwordSoaringKeyMappings;
 import org.jetbrains.annotations.NotNull;
 import yesman.epicfight.client.ClientEngine;
 import yesman.epicfight.client.world.capabilites.entitypatch.player.LocalPlayerPatch;
+import yesman.epicfight.world.capabilities.EpicFightCapabilities;
 
 public class ControlifyCompat implements ControlifyEntrypoint {
     private static InputBindingSupplier swordSkill;
@@ -127,7 +128,7 @@ public class ControlifyCompat implements ControlifyEntrypoint {
             SwordSoaringMod.rl("epicfight_combat"),
             mc -> {
                 final boolean isInGame = mc.screen == null && mc.level != null && mc.player != null;
-                final LocalPlayerPatch localPlayerPatch = ClientEngine.getInstance().getPlayerPatch();
+                final LocalPlayerPatch localPlayerPatch = EpicFightCapabilities.getEntityPatch(mc.player, LocalPlayerPatch.class);
                 if (localPlayerPatch == null) {
                     return false;
                 }

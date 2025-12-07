@@ -11,7 +11,7 @@ import net.minecraftforge.fml.loading.FMLEnvironment;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.p1nero.ss.SwordSoaringConfig;
 import net.p1nero.ss.animation.BabylonMultiPhaseAttackAnimation;
-import net.p1nero.ss.client.CameraAnim;
+import net.p1nero.ss.client.SwordSoairngCameraManager;
 import net.p1nero.ss.entity.sword.wan.WanEntity;
 import net.p1nero.ss.entity.sword.wan.WanArmature;
 import net.p1nero.ss.gameassets.SwordSoaringArmatures;
@@ -106,7 +106,7 @@ public class WanAnimations {
                         AnimationEvent.SimpleEvent.create((livingEntityPatch, staticAnimation, objects) -> {
                             if(livingEntityPatch.isLogicalClient()){
                                 if(livingEntityPatch.getOriginal() == Minecraft.getInstance().player){
-                                    CameraAnim.zoomIn(new Vec3f(0, -3, -6), 450);
+                                    SwordSoairngCameraManager.zoomIn(new Vec3f(0, -3, -6), 200);
                                 }
                             }
                         }, AnimationEvent.Side.CLIENT),
@@ -124,7 +124,7 @@ public class WanAnimations {
         WAN2_PLAYER = builder.nextAccessor("wan/wan_owner_2", accessor -> new ActionAnimation(0.0001F, accessor, biped)
                 .addEvents(AnimationProperty.StaticAnimationProperty.ON_BEGIN_EVENTS, AnimationEvent.SimpleEvent.create((livingEntityPatch, staticAnimation, objects) -> {
                     if(livingEntityPatch.getOriginal() == Minecraft.getInstance().player){
-                        CameraAnim.zoomIn(new Vec3f(0, -3, -6), 450);
+                        SwordSoairngCameraManager.zoomIn(new Vec3f(0, -3, -6), 200);
                     }
                 }, AnimationEvent.Side.CLIENT))
                 .addEvents(AnimationProperty.StaticAnimationProperty.ON_END_EVENTS, AnimationEvent.SimpleEvent.create((livingEntityPatch, staticAnimation, objects) -> {
@@ -144,7 +144,7 @@ public class WanAnimations {
                 .addEvents(AnimationProperty.StaticAnimationProperty.ON_BEGIN_EVENTS,
                         AnimationEvent.SimpleEvent.create((livingEntityPatch, staticAnimation, objects) -> {
                             if(livingEntityPatch.getOriginal() == Minecraft.getInstance().player){
-                                CameraAnim.zoomIn(new Vec3f(0, -3, -6), 200);
+                                SwordSoairngCameraManager.zoomIn(new Vec3f(0, -3, -6), 100);
                             }
                         }, AnimationEvent.Side.CLIENT),
                         AnimationEvent.SimpleEvent.create((livingEntityPatch, staticAnimation, objects) -> {

@@ -33,7 +33,7 @@ public class CombatKeyMapping extends KeyMapping {
     }
 
     public boolean isActiveAndMatches(InputConstants.@NotNull Key keyCode) {
-        return super.isActiveAndMatches(keyCode) && ClientEngine.getInstance().isBattleMode();
+        return super.isActiveAndMatches(keyCode) && ClientEngine.getInstance().isEpicFightMode();
     }
 
 }

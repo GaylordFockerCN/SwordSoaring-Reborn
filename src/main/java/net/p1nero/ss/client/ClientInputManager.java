@@ -1,5 +1,6 @@
 package net.p1nero.ss.client;
 
+import moe.plushie.armourers_workshop.core.skin.molang.runtime.function.math.Min;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.LocalPlayer;
@@ -24,6 +25,7 @@ import yesman.epicfight.network.client.CPChangeSkill;
 import yesman.epicfight.skill.Skill;
 import yesman.epicfight.skill.SkillContainer;
 import yesman.epicfight.skill.SkillSlot;
+import yesman.epicfight.world.capabilities.EpicFightCapabilities;
 import yesman.epicfight.world.capabilities.entitypatch.player.PlayerPatch;
 
 import java.util.List;
@@ -61,7 +63,7 @@ public class ClientInputManager {
     }
 
     public static void switchModeKeyPressed() {
-        LocalPlayerPatch localPlayerPatch = ClientEngine.getInstance().getPlayerPatch();
+        LocalPlayerPatch localPlayerPatch = EpicFightCapabilities.getEntityPatch(Minecraft.getInstance().player, LocalPlayerPatch.class);
         if (localPlayerPatch != null) {
             SkillContainer skillContainer = localPlayerPatch.getSkill(SwordSoaringSkillSlots.SWORD_SOARING);
             List<Skill> learnedSkills = localPlayerPatch.getSkillCapability().listAcquiredSkills().filter(skill ->
@@ -79,7 +81,7 @@ public class ClientInputManager {
     }
 
     public static void sendSkillPacket(SkillSlot slot, KeyMapping key){
-        LocalPlayerPatch localPlayerPatch = ClientEngine.getInstance().getPlayerPatch();
+        LocalPlayerPatch localPlayerPatch = EpicFightCapabilities.getEntityPatch(Minecraft.getInstance().player, LocalPlayerPatch.class);
         if(localPlayerPatch != null){
             if(localPlayerPatch.getPlayerMode() == PlayerPatch.PlayerMode.EPICFIGHT && localPlayerPatch.getSkill(slot) != null && localPlayerPatch.getSkill(slot).sendCastRequest(localPlayerPatch, ClientEngine.getInstance().controlEngine).shouldReserveKey()){
                 ControlEngineAccessor controlEngine = (ControlEngineAccessor) ClientEngine.getInstance().controlEngine;

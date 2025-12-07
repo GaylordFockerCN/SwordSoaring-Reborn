@@ -1,0 +1,73 @@
+{
+  "itemGroup.sword_soaring.items": "Тайные записи о клинке Вэйцзян",
+  "item.sword_soaring.vatansever": "Клинок Вэйцзян",
+  "item.sword_soaring.vatansever.description1": " —— §b§lЕго стальной и холодный клинок охраняет безмятежные королевства;§r§c§lон уничтожает всех злых духов в мире, даже среди тысячи слоев смертоносных формаций§r",
+  "item.sword_soaring.vatansever.description2": "После древней войны между богами и демонами, мастер-оружейник горы Куньу выковал клинок из морозной стали преисподней и костей богов и демонов, закаляя клинок сто лет в тайном царстве Гуйсю. В день завершения меча с неба посыпались звёзды, словно слёзы, а на самом клинке появились руны «Небесного массива», притягивающие душу дракона, обвивающуюся вокруг его хребта. Только тогда люди поняли, что этот клинок — не оружие убийства, а божественное оружие, призванное остановить бедствия и защитить праведный путь, когда все живые существа сталкиваются с бедствием. Теперь же клинок пронзает солнце и сокрушает горы, подавляя демонов восьми пустошей, но даёт убежище деревням, окутанным дымом.",
+  "skill.sword_soaring.vatansever.tooltip1": "§3§lСюаньмин: круг ледянных клинков§r —— ",
+  "skill.sword_soaring.vatansever.tooltip2": "§7С ледяными символами формируются ледяные клинки, разрывающие души.§r",
+  "skill.sword_soaring.vatansever.tooltip3": "§c§lТри стихии, пронизывающие солнце§r —— ",
+  "skill.sword_soaring.vatansever.tooltip4": "§7Меч объединяет три стихии, образуя хребет дракона; клинок пронзает облака и небеса, достигая солнца.§r",
+  "skill.sword_soaring.vatansever.tooltip5": "§f§lШестикратный Сокрушитель Бездны§r —— ",
+  "skill.sword_soaring.vatansever.tooltip6": "§7Шестеро становятся одним целым, один его взмах очищает вечную тьму ада.§r",
+  "skill.sword_soaring.vatansever.tooltip7": "§f§lУтес Клинков Гуйсю§r —— ",
+  "skill.sword_soaring.vatansever.tooltip8": "§7Стены из кованых клинков запечатывают последний вздох жизни, молчание Гуйсю поёт реквием смерти§r",
+  "skill.sword_soaring.vatansever.tooltip9": "§b§lТехника убийства Кольцом Бездны Дракона§r —— ",
+  "skill.sword_soaring.vatansever.tooltip10": "§7Дыхание свернувшегося дракона становится острым штормом; массив пробуждается, поглощая солнце и луну.§r",
+
+  "epicfight.skill_slot.sword_soaring": "Парящий меч",
+  "skill.epicfight.sword_soaring.category": "Парящий меч",
+  "skill.sword_soaring.sword_soaring_apprentice": "Парящий меч — Новичок",
+  "skill.sword_soaring.sword_soaring_apprentice.tooltip": "Техника упраления парящим мечом для начинающих\n\nДважды нажми [%s], чтобы взлететь. Удерживай [%s], чтобы ускориться.",
+  "skill.sword_soaring.sword_soaring_expert": "Парящий меч — Эксперт",
+  "skill.sword_soaring.sword_soaring_expert.tooltip": "Техника упраления парящим мечом для продвинутых\n\nДважды нажми [%s], чтобы взлететь. Удерживай [%s], чтобы ускориться.",
+  "skill.sword_soaring.sword_soaring_master": "Парящий меч — Мастер",
+  "skill.sword_soaring.sword_soaring_master.tooltip": "Техника упраления парящим мечом для мастеров\n\nОсвоив этот навык, вам не придется тратить Ци или беспокоиться о регулировании дыхания.\n\n(Полет не будет расходовать выносливость и перезаряжаться)\n\nДважды нажмите [%s], чтобы взлететь. Удерживайте [%s], чтобы ускориться.",
+  "skill.sword_soaring.sword_soaring_elytra_apprentice": "Крылатый меч — Новичок",
+  "skill.sword_soaring.sword_soaring_elytra_apprentice.tooltip": "Техника упраления крылатым мечом для начинающих\n\nДважды нажми [%s], чтобы взлететь. Удерживай [%s], чтобы ускориться.",
+  "skill.sword_soaring.sword_soaring_elytra_expert": "Крылатый меч — Эксперт",
+  "skill.sword_soaring.sword_soaring_elytra_expert.tooltip": "Техника упраления крылатым мечом для продвинутых\n\nДважды нажми [%s], чтобы взлететь. Удерживай [%s], чтобы ускориться.",
+  "skill.sword_soaring.sword_soaring_elytra_master": "Крылатый меч — Мастер",
+  "skill.sword_soaring.sword_soaring_elytra_master.tooltip": "Техника упраления крылатым мечом для мастеров\n\nОсвоив этот навык, вам не придется тратить Ци или беспокоиться о регулировании дыхания.\n\n(Полет не будет расходовать выносливость и перезаряжаться)\n\nДважды нажмите [%s], чтобы взлететь. Удерживайте [%s], чтобы ускориться.",
+
+  "skill.sword_soaring.vatansever_dodge": "Уклонение Вэйцзян",
+  "skill.sword_soaring.vatansever_dodge.tooltip": "Навык уклонения для Вэйцзян. Этот навык будет изучен автоматически при использовании Вэйцзяна. Навык не действует, если вы держите другое оружие.",
+
+  "epicfight.skill_slot.sword_controller": "Техника владением мечом",
+  "skill.epicfight.sword_controller.category": "Техники владением меча",
+
+  "skill.sword_soaring.screen_sword": "Владение Меча Пустоты",
+  "skill.sword_soaring.screen_sword.tooltip": "§f§lЭнергия меча плетет сеть, запечатывающую восемь направлений; когда формирование кольца завершено, небеса и земли торжествуют§r\n\nПризовите Владение Меча Пустоты для защиты от любых ран. Оно может защищать от летящих стрел, а при атаке контратаковать; его мощь определяется силой оружия\n\nТеряет 1 меч за каждые %d/6 ударов, восстанавливая %.1f HP\n\nПродолжительность: %.1fсек\nПерезарядка: %.1fсек\n\nНажмите [%s]",
+
+  "skill.sword_soaring.kill_aura_1": "Бедствие звёзд",
+  "skill.sword_soaring.kill_aura_1.tooltip": "§b§lКогда звёзды небесные падают на землю, всё, что покрыто их сиянием, погибает§r\n\nЗвёздное бедствие наносит урон окружающим существам; его мощь определяется силой оружия\n\nПродолжительность: %.1fs\nПерезарядка: %.1fs\n\nНажмите [%s]",
+
+  "skill.sword_soaring.kill_aura_2": "Багровый Лотос",
+  "skill.sword_soaring.kill_aura_2.tooltip": "§c§lБагровое кольцо лезвий расцветает, словно лотос, сжигая всё живое и не оставляя следа§r\n\nБагровый Лотос воспламеняет окружающую землю. Все, кто поражён им, воспламеняются; его мощь определяется силой оружия\n\nПродолжительность: %.1fs\nПерезарядка: %.1fs\n\nНажмите [%s]",
+
+  "skill.sword_soaring.rain_sword": "Созвездие Большой Медведицы",
+  "skill.sword_soaring.rain_sword.tooltip": "§f§lМощь Большой Медведицы образует царство меча, достигая всего зла§r\n\nКаждый удар вызывает %d-%d призрачных клинков\n\nПродолжительность: %.1fs\nПерезарядка: %.1fs\n\nНажмите [%s]",
+
+  "skill.sword_soaring.babylon": "Сокровищница королевского двора",
+  "skill.sword_soaring.babylon.tooltip": "Откройте хранилище сокровищ, в котором поместятся десять тысяч солдат, и пусть дождь мечей пронзит небо\n\n§e§l\"Хмф. Благородное оружие заслуживает правильного использования\"§r\n\nПерезарядка: %.1fs\n\nНажмите [%s]",
+
+  "skill.sword_soaring.wan_jian_gui_zong": "Мириада клинков",
+  "skill.sword_soaring.wan_jian_gui_zong.tooltip": "Ци черпается из восьми направлений, меч управляет шестью сферами.\n\nПарящая ци вызывает тысячегранный шторм, сфокусированная воля объединяет форму мириадов клинков.\n\nТолько просвещённый может узреть это искусство.\n\nПерезарядка: %.1fs\n\nНажмите [%s]",
+
+  "key.sword_soaring.common": "Epic Fight: Sword Soaring",
+  "key.sword_soaring.sword_skill": "Навык меча",
+  "key.sword_soaring.sword_back": "Вернуть меч (Вэйцзян)",
+  "key.sword_soaring.take_off": "Начать полет",
+  "key.sword_soaring.acceleration": "Ускорение",
+  "key.sword_soaring.switch_mode": "Переключить режим палета",
+
+  "key.sword_soaring.sword_skill.description": "Применяет особые навыки владения мечом, если они доступны.",
+  "key.sword_soaring.sword_back.description": "Возвращает ваш меч Вэйцзян на место.",
+  "key.sword_soaring.take_off.description": "Активирует полет Парящего Меча, если у вас есть необходимый навык в Epic Fight.",
+  "key.sword_soaring.acceleration.description": "Временно увеличивает скорость полета.",
+  "key.sword_soaring.switch_mode.description": "Переключает различные режимы полета.",
+
+  "tips.sword_soaring.style_change": "Текущий стиль полета:",
+  "biome.sword_soaring.the_wraithium_battlegrounds": "Поля битвы Аида",
+
+  "skill_tree.sword_soaring.sword_soaring_skills": "Навыки меча"
+}

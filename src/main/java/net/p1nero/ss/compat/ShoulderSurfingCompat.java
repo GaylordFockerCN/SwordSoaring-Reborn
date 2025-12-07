@@ -7,8 +7,8 @@ import net.minecraft.client.Minecraft;
 import net.p1nero.ss.gameassets.SwordSoaringDatakeys;
 import net.p1nero.ss.skill.sword_soaring.SwordSoaringSkill;
 import org.jetbrains.annotations.NotNull;
-import yesman.epicfight.client.ClientEngine;
 import yesman.epicfight.client.world.capabilites.entitypatch.player.LocalPlayerPatch;
+import yesman.epicfight.world.capabilities.EpicFightCapabilities;
 
 @SuppressWarnings("unused") // Referenced in src/main/resources/shouldersurfing_plugin.json
 public class ShoulderSurfingCompat implements IShoulderSurfingPlugin {
@@ -18,11 +18,13 @@ public class ShoulderSurfingCompat implements IShoulderSurfingPlugin {
     }
 
     private static class ForceCameraCouplingWhileSwordSoaringFlying implements ICameraCouplingCallback {
+
         @Override
         public boolean isForcingCameraCoupling(Minecraft minecraft) {
-            final LocalPlayerPatch localPlayerPatch = ClientEngine.getInstance().getPlayerPatch();
-            if (localPlayerPatch == null) return false;
-
+            final LocalPlayerPatch localPlayerPatch = EpicFightCapabilities.getEntityPatch(minecraft.player, LocalPlayerPatch.class);
+            if (localPlayerPatch == null) {
+                return false;
+            }
             return isPlayerSwordSoaringFlying(localPlayerPatch);
         }
 
