@@ -21,7 +21,7 @@ import net.p1nero.ss.entity.vatansever.client.PatchedVatanseverRenderer;
 import net.p1nero.ss.entity.vatansever.client.VatanseverRenderer;
 import net.p1nero.ss.entity.vatansever_storm.client.PatchedVatanseverStormRenderer;
 import net.p1nero.ss.entity.vatansever_storm.client.VatanseverStormRenderer;
-import yesman.epicfight.api.client.camera.EpicFightCameraAPI;
+import yesman.epicfight.api.client.event.EpicFightClientHooks;
 import yesman.epicfight.api.client.forgeevent.PatchedRenderersEvent;
 
 @Mod.EventBusSubscriber(modid = SwordSoaringMod.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
@@ -36,7 +36,7 @@ public class ClientModEvents {
         EntityRenderers.register(SwordSoaringEntities.VATANSEVER_STORM.get(), VatanseverStormRenderer::new);
         EntityRenderers.register(SwordSoaringEntities.RAY_ENTITY.get(), RayRenderer::new);
 
-        EpicFightCameraAPI.getInstance().addCameraSetupListenerPost(SwordSoaringMod.MOD_ID, SwordSoairngCameraManager::onCameraSetupEnd);
+        EpicFightClientHooks.Camera.BUILD_TRANSFORM_POST.registerPassiveEvent(SwordSoairngCameraManager::onEpicFightCameraSetupEnd);
     }
 
     @SubscribeEvent

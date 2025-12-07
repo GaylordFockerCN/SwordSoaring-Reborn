@@ -6,7 +6,6 @@
   "client": [
     "ControlEngineAccessor",
     "GameRendererMixin",
-    "RenderEngineMixin",
     "TrailParticleMixin"
   ],
   "mixins": [
