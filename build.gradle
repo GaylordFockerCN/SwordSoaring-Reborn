@@ -3,16 +3,21 @@ plugins {
     id 'maven-publish'
     id 'idea'
     id 'net.neoforged.moddev' version '2.0.95'
+    id("me.modmuss50.mod-publish-plugin") version "1.1.0"
 }
 
 version = mod_version
 group = mod_group_id
 
 base {
-    archivesName = mod_id + "-neoforge1.21.1"
+    archivesName = mod_id
+    version = getFullModVersion()
 }
 
-java.toolchain.languageVersion = JavaLanguageVersion.of(21)
+java {
+    toolchain.languageVersion.set(JavaLanguageVersion.of(21))
+    withSourcesJar()
+}
 
 neoForge {
     // Specify the version of NeoForge to use.
@@ -89,9 +94,9 @@ sourceSets.main.resources { srcDir 'src/generated/resources' }
 
 
 dependencies {
-    implementation "maven.modrinth:epic-fight:21.13.3.2"
-    implementation "curse.maven:epic-fight-invincible-1184379:7081231"
-    implementation "curse.maven:epic-fight-skill-tree-1295882:7185846"
+    implementation "maven.modrinth:epic-fight:${project.epicfight_version}"
+    implementation "maven.modrinth:epic-fight-invincible-lib:${project.invincible_lib_version}"
+    implementation "maven.modrinth:epic-fight-skill-tree:${project.epicskills_version}"
     implementation "curse.maven:armourers-workshop-229523:6965584"
     implementation "curse.maven:shoulder-surfing-reloaded-243190:6993795"
     // Change "compileOnly" to "implementation" for testing in-game.
@@ -159,5 +164,53 @@ idea {
     module {
         downloadSources = true
         downloadJavadoc = true
+    }
+}
+
+def getFullModVersion() {
+    return "${mod_version}-mc${minecraft_version}-neoforge"
+}
+
+publishMods {
+    def releaseNotesFile = project.file("RELEASE_NOTES.md")
+    def releaseNotesContent = releaseNotesFile.text
+
+    changelog = """
+|**Tested against:**
+|- **NeoForge:** ${neo_version}
+|- **Minecraft:** ${minecraft_version}
+|- **Epic Fight:** ${epicfight_version}
+|- **Epic Fight - Invincible Lib:** ${invincible_lib_version}
+|- **Epic Fight: Skill Tree:** ${epicskills_version}
+|
+|${releaseNotesContent}
+""".stripMargin().trim()
+
+    modLoaders.add("neoforge")
+    type = STABLE
+    displayName = getFullModVersion()
+    file = tasks.jar.archiveFile
+    additionalFiles.from(sourcesJar)
+
+    curseforge {
+        accessToken = System.getenv("CURSEFORGE_TOKEN")
+        projectId = "1011068"
+        minecraftVersions.add(minecraft_version)
+        projectSlug = "sword-soaring"
+
+        requires("epic-fight-mod")
+        requires("epic-fight-invincible")
+    }
+
+    modrinth {
+        accessToken = System.getenv("MODRINTH_TOKEN")
+        projectId = "oP1of4Wn"
+        minecraftVersions.add(minecraft_version)
+
+        requires("epic-fight")
+        requires("epic-fight-invincible-lib")
+
+        // Syncs the GitHub README with the Modrinth project description
+        // projectDescription = file("README.md").text
     }
 }
