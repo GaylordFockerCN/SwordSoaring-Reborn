@@ -107,8 +107,7 @@ dependencies {
 //            jarJar.ranged(it, "[0.5.0,)")
 //        }
 //    }
-    implementation fg.deobf("libs:epicfight:20.14.0.12")
-//    implementation fg.deobf("maven.modrinth:epic-fight:${epicfight_version}")
+    implementation fg.deobf("maven.modrinth:epic-fight:${epicfight_version}")
     implementation fg.deobf("maven.modrinth:epic-fight-skill-tree:${epicskills_version}")
     implementation fg.deobf("maven.modrinth:epic-fight-invincible-lib:${invincible_lib_version}")
 

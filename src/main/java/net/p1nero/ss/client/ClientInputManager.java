@@ -1,6 +1,5 @@
 package net.p1nero.ss.client;
 
-import moe.plushie.armourers_workshop.core.skin.molang.runtime.function.math.Min;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.LocalPlayer;

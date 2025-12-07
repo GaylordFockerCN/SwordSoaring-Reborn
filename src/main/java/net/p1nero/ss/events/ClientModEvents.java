@@ -36,7 +36,7 @@ public class ClientModEvents {
         EntityRenderers.register(SwordSoaringEntities.VATANSEVER_STORM.get(), VatanseverStormRenderer::new);
         EntityRenderers.register(SwordSoaringEntities.RAY_ENTITY.get(), RayRenderer::new);
 
-        EpicFightClientHooks.Camera.BUILD_TRANSFORM_POST.registerPassiveEvent(SwordSoairngCameraManager::onEpicFightCameraSetupEnd);
+        EpicFightClientHooks.Camera.BUILD_TRANSFORM_POST.registerEvent(SwordSoairngCameraManager::onEpicFightCameraSetupEnd);
     }
 
     @SubscribeEvent
