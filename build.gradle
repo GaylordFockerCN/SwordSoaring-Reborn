@@ -98,7 +98,7 @@ dependencies {
     implementation "maven.modrinth:epic-fight-invincible-lib:${project.invincible_lib_version}"
     implementation "maven.modrinth:epic-fight-skill-tree:${project.epicskills_version}"
     implementation "curse.maven:armourers-workshop-229523:6965584"
-    implementation "curse.maven:shoulder-surfing-reloaded-243190:6993795"
+    compileOnly "curse.maven:shoulder-surfing-reloaded-243190:6993795"
     // Change "compileOnly" to "implementation" for testing in-game.
     compileOnly("dev.isxander:controlify:${project.controlify_version}") {
         // Only need Controlify API, ignore the transitive dependencies (e.g, QuiltMC parsers)

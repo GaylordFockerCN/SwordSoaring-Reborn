@@ -1,10 +1,8 @@
 package net.p1nero.ss.skill.sword_controller;
 
-import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.item.ItemStack;
@@ -13,7 +11,7 @@ import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
 import net.p1nero.ss.capability.SwordSoaringAttachments;
 import net.p1nero.ss.capability.SSPlayer;
-import net.p1nero.ss.client.CameraAnim;
+import net.p1nero.ss.client.SwordSoairngCameraManager;
 import net.p1nero.ss.client.keymapping.SwordSoaringKeyMappings;
 import net.p1nero.ss.entity.sword.gate_of_babylon.BabylonEntity;
 import net.p1nero.ss.gameassets.SwordSoaringArmatures;
@@ -102,7 +100,7 @@ public class GateOfBabylonSkill extends Skill {
         } else {
             if(currentCameraTimer > 0){
                 if(container.getExecutor().getOriginal().equals(Minecraft.getInstance().player)){
-                    CameraAnim.zoomIn(new Vec3f(0, -3 ,-6), 200);
+                    SwordSoairngCameraManager.zoomIn(new Vec3f(0, -3 ,-6), 100);
                 }
             }
         }

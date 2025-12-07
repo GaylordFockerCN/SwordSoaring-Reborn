@@ -7,7 +7,6 @@
     "ControlEngineAccessor",
     "GameRendererMixin",
     "HealthBarMixin",
-    "LocalPlayerPatchMixin",
     "TargetIndicatorMixin",
     "TrailParticleMixin"
   ],

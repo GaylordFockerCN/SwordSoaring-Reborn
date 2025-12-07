@@ -1,9 +1,12 @@
 package net.p1nero.ss.events;
 
+import dev.isxander.controlify.platform.client.events.TickEvent;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
+import net.neoforged.neoforge.client.event.ClientTickEvent;
 import net.p1nero.ss.SwordSoaringMod;
+import net.p1nero.ss.client.SwordSoairngCameraManager;
 import net.p1nero.ss.gameassets.SwordSoaringDatakeys;
 import net.p1nero.ss.gameassets.SwordSoaringLivingMotions;
 import net.p1nero.ss.gameassets.SwordSoaringSkillSlots;
@@ -86,4 +89,10 @@ public class ClientForgeEvents {
             animator.addLivingAnimation(SwordSoaringLivingMotions.SPEED_UP_MASTER, FlyAnimations.MASTER_SPEED_UP);
         }
     }
+
+    @SubscribeEvent
+    public static void onClientTick(ClientTickEvent.Pre event) {
+        SwordSoairngCameraManager.tick();
+    }
+
 }
