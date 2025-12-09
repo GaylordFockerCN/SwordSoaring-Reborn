@@ -9,6 +9,7 @@ import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
+import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.ViewportEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -26,8 +27,8 @@ import yesman.epicfight.skill.SkillDataManager;
 /**
  * 向当前相机的位置的偏移
  */
-@Mod.EventBusSubscriber(modid = SwordSoaringMod.MOD_ID)
-public class SwordSoairngCameraManager {
+@Mod.EventBusSubscriber(modid = SwordSoaringMod.MOD_ID, value = Dist.CLIENT)
+public class SwordSoaringCameraManager {
     public static final Vec3f DEFAULT_AIMING_CORRECTION = new Vec3f(1.5F, 0.0F, 1.25F);
     private static final double DEFAULT_CAMERA_ZOOM = 6;
     private static Vec3f aimingCorrection = DEFAULT_AIMING_CORRECTION;
@@ -49,7 +50,7 @@ public class SwordSoairngCameraManager {
         zooming = true;
         zoomTick = zoomTick == 0 ? 1 : zoomTick;
         zoomOutTimer = timer;
-        SwordSoairngCameraManager.aimingCorrection = aimingCorrection;
+        SwordSoaringCameraManager.aimingCorrection = aimingCorrection;
         EpicFightCameraAPI.getInstance().setCouplingState(true);
     }
 

@@ -6,7 +6,7 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.p1nero.ss.SwordSoaringMod;
-import net.p1nero.ss.client.SwordSoairngCameraManager;
+import net.p1nero.ss.client.SwordSoaringCameraManager;
 import net.p1nero.ss.entity.SwordSoaringEntities;
 import net.p1nero.ss.entity.ray.client.RayRenderer;
 import net.p1nero.ss.entity.sword.fly_sword.client.FlySwordRenderer;
@@ -36,7 +36,7 @@ public class ClientModEvents {
         EntityRenderers.register(SwordSoaringEntities.VATANSEVER_STORM.get(), VatanseverStormRenderer::new);
         EntityRenderers.register(SwordSoaringEntities.RAY_ENTITY.get(), RayRenderer::new);
 
-        EpicFightClientHooks.Camera.BUILD_TRANSFORM_POST.registerEvent(SwordSoairngCameraManager::onEpicFightCameraSetupEnd);
+        EpicFightClientHooks.Camera.BUILD_TRANSFORM_POST.registerEvent(SwordSoaringCameraManager::onEpicFightCameraSetupEnd);
     }
 
     @SubscribeEvent

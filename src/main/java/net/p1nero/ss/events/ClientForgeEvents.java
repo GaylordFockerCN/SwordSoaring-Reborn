@@ -6,7 +6,7 @@ import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.p1nero.ss.SwordSoaringMod;
-import net.p1nero.ss.client.SwordSoairngCameraManager;
+import net.p1nero.ss.client.SwordSoaringCameraManager;
 import net.p1nero.ss.gameassets.SwordSoaringDatakeys;
 import net.p1nero.ss.gameassets.SwordSoaringLivingMotions;
 import net.p1nero.ss.gameassets.SwordSoaringSkillSlots;
@@ -87,6 +87,6 @@ public class ClientForgeEvents {
         if(event.phase == TickEvent.Phase.END) {
             return;
         }
-        SwordSoairngCameraManager.tick();
+        SwordSoaringCameraManager.tick();
     }
 }

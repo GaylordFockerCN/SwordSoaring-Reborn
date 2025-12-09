@@ -123,7 +123,7 @@ dependencies {
 //    implementation fg.deobf("curse.maven:oculus-581495:6020952")
     implementation fg.deobf("curse.maven:xaeros-world-map-317780:6538337")
 
-    implementation fg.deobf("dev.echoellet:controlify-forgified:${project.controlify_version}")
+    compileOnly fg.deobf("dev.echoellet:controlify-forgified:${project.controlify_version}")
     runtimeOnly fg.deobf("maven.modrinth:yacl:3.6.6+1.20.1-forge") // Required to run Controlify (transitive dependency)
 }
 
