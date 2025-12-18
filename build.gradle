@@ -201,7 +201,6 @@ publishMods {
     type = STABLE
     displayName = getFullModVersion()
     file = tasks.jar.archiveFile
-    additionalFiles.from(sourcesJar)
 
     curseforge {
         accessToken = System.getenv("CURSEFORGE_TOKEN")
