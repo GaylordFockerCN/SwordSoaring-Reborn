@@ -56,7 +56,7 @@ public class SwordSoaringSkillElytra extends SwordSoaringSkill {
                 }
             }
         }
-        if(container.getDataManager().getDataValue(SwordSoaringDatakeys.SPEED_UP.get())){
+        if(container.getDataManager().getDataValue(SwordSoaringDatakeys.SPEED_UP.get()) && container.getExecutor().hasStamina(consumption)){
             //移速控制，只加速不匀速
             Vec3 accelerationSpeed = container.getExecutor().getOriginal().getViewVector(1.0F).normalize().scale(speed);
             Vec3 currentDeltaMovement = container.getExecutor().getOriginal().getDeltaMovement();
