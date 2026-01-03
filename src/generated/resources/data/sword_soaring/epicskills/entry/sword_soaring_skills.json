@@ -28,7 +28,7 @@
       "hidden": false,
       "parents": [
         {
-          "skill": "sword_soaring:sword_soaring_apprentice"
+          "skill": "sword_soaring:sword_soaring_expert"
         }
       ],
       "position_in_screen": [
@@ -65,7 +65,7 @@
       "hidden": false,
       "parents": [
         {
-          "skill": "sword_soaring:sword_soaring_elytra_apprentice"
+          "skill": "sword_soaring:sword_soaring_elytra_expert"
         }
       ],
       "position_in_screen": [
