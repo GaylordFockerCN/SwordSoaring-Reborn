@@ -3,12 +3,17 @@ package net.p1nero.ss;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
+import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.fml.common.EventBusSubscriber;
+import net.neoforged.fml.event.config.ModConfigEvent;
 import net.neoforged.neoforge.common.ModConfigSpec;
 
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
+@EventBusSubscriber(modid = SwordSoaringMod.MOD_ID)
 public class SwordSoaringConfig {
     private static final ModConfigSpec.Builder BUILDER = new ModConfigSpec.Builder();
     public static final ModConfigSpec.ConfigValue<List<? extends String>> ITEMS_CAN_FLY;
@@ -46,8 +51,8 @@ public class SwordSoaringConfig {
         SPEC = BUILDER.build();
     }
 
-    public static Set<Item> swordItems = new HashSet<>();
-    public static Set<Item> notSwordItems = new HashSet<>();
+    public static Set<Item> swordItems = null;
+    public static Set<Item> notSwordItems = null;
 
     private static ModConfigSpec.BooleanValue createBool(String key, boolean defaultValue, String... comment) {
         return BUILDER
@@ -72,6 +77,28 @@ public class SwordSoaringConfig {
 
     private static boolean validateItemName(final Object obj) {
         return obj instanceof final String itemName && BuiltInRegistries.ITEM.containsKey(ResourceLocation.parse(itemName));
+    }
+
+    @SubscribeEvent
+    public static void onConfigLoad(ModConfigEvent.Reloading event) {
+        initSwordList();
+    }
+
+    public static void initSwordList() {
+        SwordSoaringConfig.swordItems = SwordSoaringConfig.ITEMS_CAN_FLY.get().stream()
+                .map(itemName -> BuiltInRegistries.ITEM.get(ResourceLocation.parse(itemName)))
+                .collect(Collectors.toSet());
+        SwordSoaringConfig.notSwordItems = SwordSoaringConfig.ITEMS_CAN_NOT_FLY.get().stream()
+                .map(itemName -> BuiltInRegistries.ITEM.get(ResourceLocation.parse(itemName)))
+                .collect(Collectors.toSet());
+
+//        if(ModList.get().isLoaded("epic_fight_avalon")) {
+//            ForgeRegistries.ITEMS.getValues().stream()
+//                    .filter(item -> item instanceof IAvalonAnimationItem || item instanceof IChangeArmatureItem)
+//                    .forEach(item -> {
+//                        SwordSoaringConfig.notSwordItems.add(item);
+//                    });
+//        }
     }
 
 }

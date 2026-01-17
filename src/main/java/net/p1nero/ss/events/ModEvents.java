@@ -4,6 +4,7 @@ import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.neoforged.neoforge.event.entity.EntityAttributeCreationEvent;
+import net.p1nero.ss.SwordSoaringConfig;
 import net.p1nero.ss.SwordSoaringMod;
 import net.p1nero.ss.compat.ArmourersWorkshopCompat;
 import net.p1nero.ss.entity.AbstractArtifactSpiritEntity;
@@ -50,5 +51,6 @@ public class ModEvents{
     public static void commonSetup(final FMLCommonSetupEvent event) {
         event.enqueueWork(SwordSoaringArmatures::registerArmatures);
         SwordSoaringMod.runInArmourersWorkshopLoaded(() -> ArmourersWorkshopCompat::registerSwordSoaringItemProvider);
+        SwordSoaringConfig.initSwordList();
     }
 }
