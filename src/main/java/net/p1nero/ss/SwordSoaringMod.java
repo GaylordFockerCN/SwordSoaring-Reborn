@@ -62,25 +62,10 @@ public class SwordSoaringMod {
 
     /**
      * 判断物品是否属于剑或者被视为剑。
-     * 无法监听事件，干脆直接在这里初始化剑物品表。
      */
     public static boolean isValidSword(ItemStack sword) {
-        if (SwordSoaringConfig.swordItems.isEmpty()) {
-            SwordSoaringConfig.swordItems = SwordSoaringConfig.ITEMS_CAN_FLY.get().stream()
-                    .map(itemName -> ForgeRegistries.ITEMS.getValue(ResourceLocation.parse(itemName)))
-                    .collect(Collectors.toSet());
-            SwordSoaringConfig.notSwordItems = SwordSoaringConfig.ITEMS_CAN_NOT_FLY.get().stream()
-                    .map(itemName -> ForgeRegistries.ITEMS.getValue(ResourceLocation.parse(itemName)))
-                    .collect(Collectors.toSet());
-
-            if(ModList.get().isLoaded("epic_fight_avalon")) {
-                ForgeRegistries.ITEMS.getValues().stream()
-                        .filter(item -> item instanceof IAvalonAnimationItem || item instanceof IChangeArmatureItem)
-                        .forEach(item -> {
-                            SwordSoaringConfig.notSwordItems.add(item);
-                        });
-            }
-
+        if (SwordSoaringConfig.swordItems == null || SwordSoaringConfig.notSwordItems == null) {
+            return false;
         }
         if (SwordSoaringConfig.notSwordItems.contains(sword.getItem())) {
             return false;

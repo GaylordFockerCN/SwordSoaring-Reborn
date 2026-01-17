@@ -4,6 +4,7 @@ import net.minecraftforge.event.entity.EntityAttributeCreationEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
+import net.p1nero.ss.SwordSoaringConfig;
 import net.p1nero.ss.SwordSoaringMod;
 import net.p1nero.ss.compat.ArmourersWorkshopCompat;
 import net.p1nero.ss.entity.AbstractArtifactSpiritEntity;
@@ -48,5 +49,7 @@ public class ModEvents{
         event.enqueueWork(SwordSoaringArmatures::registerArmatures);
 
         SwordSoaringMod.runInArmourersWorkshopLoaded(() -> ArmourersWorkshopCompat::registerSwordSoaringItemProvider);
+
+        SwordSoaringConfig.initSwordList();
     }
 }
