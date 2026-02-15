@@ -15,18 +15,18 @@ import net.p1nero.ss.entity.sword.fly_sword.FlySwordEntity;
 import net.p1nero.ss.gameassets.SwordSoaringDatakeys;
 import net.p1nero.ss.gameassets.animations.ScreenSwordAnimations;
 import net.p1nero.ss.utils.vfx.ParticleVFX;
-import yesman.epicfight.api.neoevent.playerpatch.DealDamageEvent;
-import yesman.epicfight.api.neoevent.playerpatch.SkillCastEvent;
+import yesman.epicfight.api.event.EntityEventListener;
+import yesman.epicfight.api.event.EpicFightEventHooks;
+import yesman.epicfight.api.event.types.entity.DealDamageEvent;
+import yesman.epicfight.api.event.types.player.SkillCastEvent;
 import yesman.epicfight.client.gui.BattleModeGui;
 import yesman.epicfight.skill.*;
 import yesman.epicfight.world.capabilities.entitypatch.player.PlayerPatch;
 import yesman.epicfight.world.capabilities.entitypatch.player.ServerPlayerPatch;
 
 import java.util.List;
-import java.util.UUID;
 
 public class RainSwordSkill extends Skill {
-    private static final UUID EVENT_UUID = UUID.fromString("051a9bb2-1145-14ee-b962-0242ac191981");
     private int lifeTime, minCount, maxCount, interval, cooldown;
 
     public RainSwordSkill(SkillBuilder<?> builder) {
@@ -47,7 +47,6 @@ public class RainSwordSkill extends Skill {
         }
     }
 
-    @SkillEvent(side = SkillEvent.Side.SERVER)
     public void onSkillCast(SkillCastEvent event, SkillContainer container) {
         if(event.getSkillContainer().getSlot() == SkillSlots.WEAPON_INNATE) {
             LivingEntity target = container.getServerExecutor().getTarget();
@@ -59,7 +58,6 @@ public class RainSwordSkill extends Skill {
         }
     }
 
-    @SkillEvent(side = SkillEvent.Side.SERVER)
     public void onDealDamage(DealDamageEvent.Post event, SkillContainer container) {
         //造成伤害就画一次
         container.getDataManager().setDataSync(SwordSoaringDatakeys.PLAY_BIG_DIPPER, true);
@@ -69,6 +67,20 @@ public class RainSwordSkill extends Skill {
     public boolean canExecute(SkillContainer container) {
         PlayerPatch<?> executor = container.getExecutor();
         return executor.getOriginal().onGround() && SwordSoaringMod.isValidSword(executor.getValidItemInHand(InteractionHand.MAIN_HAND)) && (container.getDataManager().getDataValue(SwordSoaringDatakeys.COOLDOWN_TIMER) <= 0 || executor.getOriginal().isCreative());
+    }
+
+    @Override
+    public void onInitiate(SkillContainer container, EntityEventListener eventListener) {
+        super.onInitiate(container, eventListener);
+
+        eventListener.registerEvent(EpicFightEventHooks.Entity.DELIVER_DAMAGE_POST, event -> {
+            onDealDamage(event, container);
+        }, this);
+
+
+        eventListener.registerEvent(EpicFightEventHooks.Player.CAST_SKILL, event -> {
+            onSkillCast(event, container);
+        }, this);
     }
 
     @Override

@@ -9,23 +9,19 @@ import net.p1nero.ss.SwordSoaringMod;
 import net.p1nero.ss.compat.ArmourersWorkshopCompat;
 import net.p1nero.ss.entity.AbstractArtifactSpiritEntity;
 import net.p1nero.ss.entity.SwordSoaringEntities;
-import net.p1nero.ss.entity.sword.fly_sword.FlySwordEntity;
 import net.p1nero.ss.entity.sword.fly_sword.FlySwordPatch;
-import net.p1nero.ss.entity.sword.gate_of_babylon.BabylonEntity;
 import net.p1nero.ss.entity.sword.gate_of_babylon.BabylonPatch;
-import net.p1nero.ss.entity.sword.screen_sword.ScreenSwordEntity;
 import net.p1nero.ss.entity.sword.screen_sword.ScreenSwordPatch;
-import net.p1nero.ss.entity.sword.wan.WanEntity;
 import net.p1nero.ss.entity.sword.wan.WanPatch;
-import net.p1nero.ss.entity.vatansever.VatanseverEntity;
 import net.p1nero.ss.entity.vatansever.VatanseverEntityPatch;
-import net.p1nero.ss.entity.vatansever_storm.VatanseverStormEntity;
 import net.p1nero.ss.entity.vatansever_storm.VatanseverStormEntityPatch;
 import net.p1nero.ss.gameassets.SwordSoaringArmatures;
-import yesman.epicfight.api.neoevent.EntityPatchRegistryEvent;
+import net.p1nero.ss.gameassets.SwordSoaringWeaponCapabilityPreset;
+import yesman.epicfight.api.event.EpicFightEventHooks;
+import yesman.epicfight.api.event.types.registry.EntityPatchRegistryEvent;
 
 @EventBusSubscriber(modid = SwordSoaringMod.MOD_ID)
-public class ModEvents{
+public class ModEvents {
 
     @SubscribeEvent
     public static void entityAttributeEvent(EntityAttributeCreationEvent event) {
@@ -37,20 +33,24 @@ public class ModEvents{
         event.put(SwordSoaringEntities.VATANSEVER_STORM.get(), AbstractArtifactSpiritEntity.getDefaultAttribute());
     }
 
-    @SubscribeEvent
-    public static void setPatch(EntityPatchRegistryEvent event) {
-        event.getTypeEntry().put(SwordSoaringEntities.WAN_ENTITY.get(), (entity) -> new WanPatch((WanEntity) entity));
-        event.getTypeEntry().put(SwordSoaringEntities.BABYLON.get(), (entity) -> new BabylonPatch((BabylonEntity) entity));
-        event.getTypeEntry().put(SwordSoaringEntities.FLY_SWORD.get(), (entity) -> new FlySwordPatch((FlySwordEntity) entity));
-        event.getTypeEntry().put(SwordSoaringEntities.SCREEN_SWORD.get(), (entity -> new ScreenSwordPatch((ScreenSwordEntity) entity)));
-        event.getTypeEntry().put(SwordSoaringEntities.VATANSEVER.get(), (entity) -> new VatanseverEntityPatch((VatanseverEntity) entity));
-        event.getTypeEntry().put(SwordSoaringEntities.VATANSEVER_STORM.get(), (entity) -> new VatanseverStormEntityPatch((VatanseverStormEntity) entity));
+    public static void registerPatch(EntityPatchRegistryEvent event) {
+        event.registerEntityPatch(SwordSoaringEntities.WAN_ENTITY.get(), WanPatch::new);
+        event.registerEntityPatch(SwordSoaringEntities.BABYLON.get(), BabylonPatch::new);
+        event.registerEntityPatch(SwordSoaringEntities.FLY_SWORD.get(), FlySwordPatch::new);
+        event.registerEntityPatch(SwordSoaringEntities.SCREEN_SWORD.get(), (ScreenSwordPatch::new));
+        event.registerEntityPatch(SwordSoaringEntities.VATANSEVER.get(), VatanseverEntityPatch::new);
+        event.registerEntityPatch(SwordSoaringEntities.VATANSEVER_STORM.get(), VatanseverStormEntityPatch::new);
     }
 
     @SubscribeEvent
     public static void commonSetup(final FMLCommonSetupEvent event) {
-        event.enqueueWork(SwordSoaringArmatures::registerArmatures);
-        SwordSoaringMod.runInArmourersWorkshopLoaded(() -> ArmourersWorkshopCompat::registerSwordSoaringItemProvider);
-        SwordSoaringConfig.initSwordList();
+        event.enqueueWork(() -> {
+            SwordSoaringArmatures.registerArmatures();
+            SwordSoaringMod.runInArmourersWorkshopLoaded(() -> ArmourersWorkshopCompat::registerSwordSoaringItemProvider);
+            SwordSoaringConfig.initSwordList();
+            EpicFightEventHooks.Registry.WEAPON_CAPABILITY_PRESET.registerEvent(SwordSoaringWeaponCapabilityPreset::register);
+            EpicFightEventHooks.Registry.ENTITY_PATCH.registerEvent(ModEvents::registerPatch);
+            EpicFightEventHooks.Animation.INIT_ANIMATOR.registerEvent(EpicFightClientEvents::swordsoaring$onAnimatorInit);
+        });
     }
 }

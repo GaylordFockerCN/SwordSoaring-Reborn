@@ -2,13 +2,11 @@ package net.p1nero.ss.gameassets;
 
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
-import net.neoforged.bus.api.SubscribeEvent;
-import net.neoforged.fml.common.EventBusSubscriber;
 import net.p1nero.ss.SwordSoaringMod;
 import net.p1nero.ss.client.sound.SwordSoaringSounds;
 import net.p1nero.ss.gameassets.animations.VatanseverAnimations;
 import yesman.epicfight.api.animation.LivingMotions;
-import yesman.epicfight.api.neoevent.WeaponCapabilityPresetRegistryEvent;
+import yesman.epicfight.api.event.types.registry.WeaponCapabilityPresetRegistryEvent;
 import yesman.epicfight.gameasset.Animations;
 import yesman.epicfight.registry.entries.EpicFightParticles;
 import yesman.epicfight.registry.entries.EpicFightSounds;
@@ -17,9 +15,7 @@ import yesman.epicfight.world.capabilities.item.WeaponCapability;
 
 import java.util.function.Function;
 
-@EventBusSubscriber(modid = SwordSoaringMod.MOD_ID)
-public class
-SwordSoaringWeaponCapabilityPreset {
+public class SwordSoaringWeaponCapabilityPreset {
     public static final Function<Item, CapabilityItem.Builder<?>> VATANSEVER = (item) ->
              WeaponCapability.builder().category(SwordSoaringWeaponCategories.ARTIFACT_SPIRIT)
                     .styleProvider((livingEntityPatch) -> CapabilityItem.Styles.TWO_HAND)
@@ -45,7 +41,6 @@ SwordSoaringWeaponCapabilityPreset {
                     .livingMotionModifier(CapabilityItem.Styles.TWO_HAND, LivingMotions.KNEEL, VatanseverAnimations.VATANSEVER_SNEAK)
                     .livingMotionModifier(CapabilityItem.Styles.TWO_HAND, LivingMotions.SNEAK, VatanseverAnimations.VATANSEVER_SNEAK);
 
-    @SubscribeEvent
     public static void register(WeaponCapabilityPresetRegistryEvent event) {
         event.getTypeEntry().put(ResourceLocation.fromNamespaceAndPath(SwordSoaringMod.MOD_ID, "vatansever"), VATANSEVER);
     }

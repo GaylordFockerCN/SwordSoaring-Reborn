@@ -9,6 +9,7 @@ import net.minecraft.world.item.ItemStack;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
 import net.neoforged.neoforge.client.event.MovementInputUpdateEvent;
+import net.neoforged.neoforge.common.NeoForge;
 import net.p1nero.ss.SwordSoaringConfig;
 import net.p1nero.ss.SwordSoaringMod;
 import net.p1nero.ss.capability.SSPlayer;
@@ -21,22 +22,20 @@ import net.p1nero.ss.gameassets.SwordSoaringDatakeys;
 import net.p1nero.ss.gameassets.animations.FlySwordAnimations;
 import net.p1nero.ss.gameassets.animations.WanAnimations;
 import net.p1nero.ss.utils.ItemUtils;
+import yesman.epicfight.api.utils.side.ClientOnly;
 import yesman.epicfight.client.events.engine.ControlEngine;
 import yesman.epicfight.client.gui.BattleModeGui;
 import yesman.epicfight.skill.Skill;
 import yesman.epicfight.skill.SkillBuilder;
 import yesman.epicfight.skill.SkillContainer;
-import yesman.epicfight.skill.SkillEvent;
 import yesman.epicfight.world.capabilities.entitypatch.player.PlayerPatch;
 import yesman.epicfight.world.capabilities.entitypatch.player.ServerPlayerPatch;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
-import java.util.UUID;
 
 public class WanJianGuiZongSkill extends Skill {
-    private static final UUID EVENT_UUID = UUID.fromString("d2d810cc-f30f-11ed-a05b-0242ac114581");
     private static int cooldown;
 
     public WanJianGuiZongSkill(SkillBuilder<?> builder) {
@@ -53,7 +52,7 @@ public class WanJianGuiZongSkill extends Skill {
         return cooldown;
     }
 
-    @SkillEvent(side = SkillEvent.Side.CLIENT)
+    @OnlyIn(Dist.CLIENT)
     public void onMovementInput(MovementInputUpdateEvent event, SkillContainer container) {
         if (container.getClientExecutor().getPlayerMode() == PlayerPatch.PlayerMode.EPICFIGHT && SwordSoaringKeyMappings.SWORD_SKILL.isDown()) {
             Input input = event.getInput();
@@ -77,6 +76,16 @@ public class WanJianGuiZongSkill extends Skill {
     public boolean canExecute(SkillContainer container) {
         PlayerPatch<?> executor = container.getExecutor();
         return (container.getDataManager().getDataValue(SwordSoaringDatakeys.COOLDOWN_TIMER) <= 0 || executor.getOriginal().isCreative()) && executor.getOriginal().onGround() && SwordSoaringMod.isValidSword(executor.getOriginal().getMainHandItem());
+    }
+
+    @ClientOnly
+    @Override
+    @OnlyIn(Dist.CLIENT)
+    public void onInitiateClient(SkillContainer container) {
+        super.onInitiateClient(container);
+        NeoForge.EVENT_BUS.<MovementInputUpdateEvent>addListener(event -> {
+            onMovementInput(event, container);
+        });
     }
 
     @Override

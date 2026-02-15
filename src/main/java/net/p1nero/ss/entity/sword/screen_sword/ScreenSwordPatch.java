@@ -31,8 +31,8 @@ public class ScreenSwordPatch extends AbstractArtifactSpiritPatch<ScreenSwordEnt
      */
     @Override
     @OnlyIn(Dist.CLIENT)
-    public void preTickClient(EntityTickEvent.Pre event) {
-        super.preTickClient(event);
+    public void preTickClient() {
+        super.preTickClient();
         if(!played){
             if(this.isLogicalClient() && this.getOwnerPatch() != null){
                 if(!this.getOwnerPatch().getOriginal().equals(Minecraft.getInstance().player)){

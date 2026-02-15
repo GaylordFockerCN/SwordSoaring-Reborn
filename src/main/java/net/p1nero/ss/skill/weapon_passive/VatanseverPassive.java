@@ -1,25 +1,23 @@
 package net.p1nero.ss.skill.weapon_passive;
 
 import net.minecraft.world.entity.player.Player;
-import net.neoforged.neoforge.event.entity.living.LivingEquipmentChangeEvent;
+import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.event.entity.living.LivingFallEvent;
-import net.p1nero.ss.SwordSoaringMod;
 import net.p1nero.ss.capability.SwordSoaringAttachments;
 import net.p1nero.ss.capability.SSPlayer;
 import net.p1nero.ss.entity.vatansever.VatanseverEntity;
-import net.p1nero.ss.entity.vatansever.VatanseverEntityPatch;
 import net.p1nero.ss.gameassets.SwordSoaringDatakeys;
 import net.p1nero.ss.gameassets.SwordSoaringSkills;
 import net.p1nero.ss.gameassets.animations.VatanseverAnimations;
 import net.p1nero.ss.item.VatanseverItem;
-import yesman.epicfight.api.neoevent.playerpatch.SetTargetEvent;
-import yesman.epicfight.api.neoevent.playerpatch.SkillCastEvent;
-import yesman.epicfight.api.neoevent.playerpatch.TakeDamageEvent;
+import yesman.epicfight.api.event.EntityEventListener;
+import yesman.epicfight.api.event.EpicFightEventHooks;
+import yesman.epicfight.api.event.types.entity.TakeDamageEvent;
+import yesman.epicfight.api.event.types.player.SetTargetEvent;
+import yesman.epicfight.api.event.types.player.SkillCastEvent;
 import yesman.epicfight.api.utils.LevelUtil;
 import yesman.epicfight.api.utils.math.ValueModifier;
 import yesman.epicfight.skill.*;
-import yesman.epicfight.world.capabilities.EpicFightCapabilities;
-import yesman.epicfight.world.capabilities.entitypatch.player.ServerPlayerPatch;
 
 public class VatanseverPassive extends ArtifactSpiritPassiveSkill{
 
@@ -32,7 +30,6 @@ public class VatanseverPassive extends ArtifactSpiritPassiveSkill{
         return super.canExecute(container) && container.getExecutor().getOriginal().getMainHandItem().getItem() instanceof VatanseverItem;
     }
 
-    @SkillEvent(side = SkillEvent.Side.SERVER)
     public void onSkillCast(SkillCastEvent skillCastEvent, SkillContainer container) {
         if(!(skillCastEvent.getPlayerPatch().getOriginal().level().getEntity(getArtifactSpiritId(container)) instanceof VatanseverEntity)){
             if(!summonVatansever(container)){
@@ -41,7 +38,6 @@ public class VatanseverPassive extends ArtifactSpiritPassiveSkill{
         }
     }
 
-    @SkillEvent(side = SkillEvent.Side.SERVER)
     public void onTargetSet(SetTargetEvent setTargetEvent, SkillContainer container) {
         if(setTargetEvent.getTarget() instanceof VatanseverEntity){
             setTargetEvent.getPlayerPatch().setAttackTarget(null);
@@ -49,9 +45,8 @@ public class VatanseverPassive extends ArtifactSpiritPassiveSkill{
     }
 
 
-    @SkillEvent(side = SkillEvent.Side.SERVER)
     public void onHurtEventPre(TakeDamageEvent.Pre event, SkillContainer container) {
-        Player player = event.getPlayerPatch().getOriginal();
+        Player player = container.getExecutor().getOriginal();
         if(player.isFallFlying()){
             double power = player.getDeltaMovement().length();
             if(power > 1){
@@ -61,7 +56,6 @@ public class VatanseverPassive extends ArtifactSpiritPassiveSkill{
         }
     }
 
-    @SkillEvent(side = SkillEvent.Side.SERVER)
     public void onFallEvent(LivingFallEvent fallEvent, SkillContainer container) {
         Player player = container.getServerExecutor().getOriginal();
         double power = player.getDeltaMovement().length();
@@ -73,13 +67,25 @@ public class VatanseverPassive extends ArtifactSpiritPassiveSkill{
     }
 
     @Override
-    public void onInitiate(SkillContainer container) {
-        super.onInitiate(container);
+    public void onInitiate(SkillContainer container, EntityEventListener eventListener) {
+        super.onInitiate(container, eventListener);
         Skill lastDodge = container.getExecutor().getSkill(SkillSlots.DODGE).getSkill();
         container.getExecutor().getOriginal().getData(SwordSoaringAttachments.SS_PLAYER).setLastDodgeSkill(lastDodge == SwordSoaringSkills.VATANSEVER_DODGE.get() ? null : lastDodge);
         container.getExecutor().getSkill(SkillSlots.DODGE).setSkill(SwordSoaringSkills.VATANSEVER_DODGE.get());
         container.getDataManager().setData(SwordSoaringDatakeys.SWORD_COUNT, 6);
         summonVatansever(container);
+        eventListener.registerEvent(EpicFightEventHooks.Player.CAST_SKILL, event -> {
+            onSkillCast(event, container);
+        }, this);
+        eventListener.registerEvent(EpicFightEventHooks.Player.SET_TARGET, event -> {
+            onTargetSet(event, container);
+        }, this);
+        eventListener.registerEvent(EpicFightEventHooks.Entity.TAKE_DAMAGE_PRE, event -> {
+            onHurtEventPre(event, container);
+        }, this);
+        NeoForge.EVENT_BUS.<LivingFallEvent>addListener(livingFallEvent -> {
+            onFallEvent(livingFallEvent, container);
+        });
     }
 
     public boolean summonVatansever(SkillContainer container){

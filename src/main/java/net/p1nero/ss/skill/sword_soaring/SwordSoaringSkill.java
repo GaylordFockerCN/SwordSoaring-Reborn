@@ -13,6 +13,7 @@ import net.minecraft.world.phys.Vec3;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
 import net.neoforged.neoforge.client.event.MovementInputUpdateEvent;
+import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.event.entity.living.LivingEquipmentChangeEvent;
 import net.neoforged.neoforge.event.entity.living.LivingFallEvent;
 import net.p1nero.ss.SwordSoaringMod;
@@ -26,8 +27,11 @@ import net.p1nero.ss.item.SwordSoaringItems;
 import org.jetbrains.annotations.Nullable;
 import yesman.epicfight.api.animation.AnimationManager;
 import yesman.epicfight.api.animation.types.StaticAnimation;
-import yesman.epicfight.api.neoevent.playerpatch.SkillCastEvent;
-import yesman.epicfight.api.neoevent.playerpatch.TakeDamageEvent;
+import yesman.epicfight.api.event.EntityEventListener;
+import yesman.epicfight.api.event.EpicFightEventHooks;
+import yesman.epicfight.api.event.types.entity.TakeDamageEvent;
+import yesman.epicfight.api.event.types.player.SkillCastEvent;
+import yesman.epicfight.api.utils.side.ClientOnly;
 import yesman.epicfight.client.events.engine.ControlEngine;
 import yesman.epicfight.client.gui.BattleModeGui;
 import yesman.epicfight.client.world.capabilites.entitypatch.player.LocalPlayerPatch;
@@ -103,7 +107,7 @@ public class SwordSoaringSkill extends Skill {
         Minecraft.getInstance().getSoundManager().play(new SwordFlyingSoundInstance(executer));
     }
 
-    @SkillEvent(side = SkillEvent.Side.CLIENT)
+    @OnlyIn(Dist.CLIENT)
     public void onMovementInput(MovementInputUpdateEvent event, SkillContainer container) {
         if (container.getDataManager().getDataValue(SwordSoaringDatakeys.FLYING)) {
             Input input = event.getInput();
@@ -122,37 +126,33 @@ public class SwordSoaringSkill extends Skill {
         }
     }
 
-    @SkillEvent(side = SkillEvent.Side.SERVER)
     public void onHurtEventPost(TakeDamageEvent.Post event, SkillContainer container) {
         if (container.getDataManager().getDataValue(SwordSoaringDatakeys.FLYING)) {
             stopFlying(container, container.getServerExecutor().getOriginal());
         }
     }
 
-    @SkillEvent(side = SkillEvent.Side.SERVER)
     public void onFallEvent(LivingFallEvent fallEvent, SkillContainer container) {
         if (container.getDataManager().getDataValue(SwordSoaringDatakeys.FLYING)) {
             if (!container.getExecutor().isLogicalClient()) {
                 stopFlying(container, container.getServerExecutor().getOriginal());
+                container.getServerExecutor().updateMotion(false);
             }
             fallEvent.setDamageMultiplier(0);
             fallEvent.setCanceled(true);
-            container.getServerExecutor().updateMotion(false);
         }
     }
 
-    @SkillEvent(side = SkillEvent.Side.BOTH)
     public void onSkillCast(SkillCastEvent event, SkillContainer container) {
         if (container.getDataManager().getDataValue(SwordSoaringDatakeys.FLYING)) {
             if(event.getSkillContainer().getSlot() == SkillSlots.WEAPON_INNATE) {
-                event.setCanceled(true);
+                event.cancel();
             } else if(!container.getExecutor().isLogicalClient()) {
                 stopFlying(container, container.getServerExecutor().getOriginal());
             }
         }
     }
 
-    @SkillEvent(caller = SwordSoaringMod.MOD_ID, side = SkillEvent.Side.SERVER)
     public void onLivingEquipmentChange(LivingEquipmentChangeEvent event, SkillContainer container){
         if(container.getSkill() instanceof SwordSoaringSkill skill && event.getSlot() == EquipmentSlot.MAINHAND){
             if(container.getDataManager().hasData(SwordSoaringDatakeys.FLYING) && container.getDataManager().getDataValue(SwordSoaringDatakeys.FLYING)){
@@ -162,15 +162,39 @@ public class SwordSoaringSkill extends Skill {
     }
 
     @Override
-    public void onInitiate(SkillContainer container) {
-        super.onInitiate(container);
-        //成为大师后，初级和高级飞行将不消耗耐力
+    public void onInitiate(SkillContainer container, EntityEventListener eventListener) {
+        super.onInitiate(container, eventListener);
+
         Collection<?> capabilitySkill = container.getExecutor().getPlayerSkills().listAcquiredSkills().filter(skill ->
                 skill.getCategory() == SwordSoaringSkillCategories.SWORD_SOARING).toList();
         if(capabilitySkill.contains(SwordSoaringSkills.SWORD_SOARING_MASTER) || capabilitySkill.contains(SwordSoaringSkills.SWORD_SOARING_ELYTRA_MASTER)){
             cooldown = 0;
             consumption = 0;
         }
+
+        eventListener.registerEvent(EpicFightEventHooks.Entity.TAKE_DAMAGE_POST, event -> {
+            onHurtEventPost(event, container);
+        }, this);
+
+        eventListener.registerEvent(EpicFightEventHooks.Player.CAST_SKILL, event -> {
+            onSkillCast(event, container);
+        }, this);
+        NeoForge.EVENT_BUS.<LivingEquipmentChangeEvent>addListener(livingEquipmentChangeEvent -> {
+            onLivingEquipmentChange(livingEquipmentChangeEvent, container);
+        });
+        NeoForge.EVENT_BUS.<LivingFallEvent>addListener(livingFallEvent -> {
+            onFallEvent(livingFallEvent, container);
+        });
+    }
+
+    @ClientOnly
+    @Override
+    @OnlyIn(Dist.CLIENT)
+    public void onInitiateClient(SkillContainer container) {
+        super.onInitiateClient(container);
+        NeoForge.EVENT_BUS.<MovementInputUpdateEvent>addListener(inputUpdateEvent -> {
+            onMovementInput(inputUpdateEvent, container);
+        });
     }
 
     @Override

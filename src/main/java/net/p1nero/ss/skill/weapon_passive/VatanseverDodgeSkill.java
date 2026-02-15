@@ -10,14 +10,15 @@ import net.neoforged.api.distmarker.OnlyIn;
 import net.p1nero.ss.gameassets.SwordSoaringDatakeys;
 import yesman.epicfight.api.client.input.InputManager;
 import yesman.epicfight.api.client.input.MovementDirection;
-import yesman.epicfight.api.neoevent.playerpatch.DodgeSuccessEvent;
+import yesman.epicfight.api.event.EntityEventListener;
+import yesman.epicfight.api.event.EpicFightEventHooks;
+import yesman.epicfight.api.event.types.entity.DodgeEvent;
 import yesman.epicfight.client.events.engine.ControlEngine;
 import yesman.epicfight.client.world.capabilites.entitypatch.player.LocalPlayerPatch;
 import yesman.epicfight.registry.entries.EpicFightParticles;
 import yesman.epicfight.registry.entries.EpicFightSounds;
 import yesman.epicfight.skill.SkillContainer;
 import yesman.epicfight.skill.SkillDataManager;
-import yesman.epicfight.skill.SkillEvent;
 import yesman.epicfight.skill.SkillSlots;
 import yesman.epicfight.skill.dodge.DodgeSkill;
 
@@ -27,12 +28,22 @@ public class VatanseverDodgeSkill extends DodgeSkill {
         super(builder);
     }
 
-    @SkillEvent(side = SkillEvent.Side.SERVER)
-    public void onDodgeSuccess(DodgeSuccessEvent event, SkillContainer container) {
-        SkillContainer weaponInnate = event.getPlayerPatch().getSkill(SkillSlots.WEAPON_INNATE);
+    @Override
+    public void onInitiate(SkillContainer container, EntityEventListener eventListener) {
+        super.onInitiate(container, eventListener);
+        eventListener.registerEvent(EpicFightEventHooks.Entity.ON_DODGE, event -> {
+            onDodgeSuccess(event, container);
+        }, this);
+    }
+
+    public void onDodgeSuccess(DodgeEvent event, SkillContainer container) {
+        if(container.getExecutor().isLogicalClient()) {
+            return;
+        }
+        SkillContainer weaponInnate = container.getExecutor().getSkill(SkillSlots.WEAPON_INNATE);
         weaponInnate.getSkill().setStackSynchronize(weaponInnate, weaponInnate.getStack() + 1);
-        ServerPlayer serverPlayer = event.getPlayerPatch().getOriginal();
-        SkillDataManager manager = event.getPlayerPatch().getSkill(SkillSlots.WEAPON_PASSIVE).getDataManager();
+        ServerPlayer serverPlayer = container.getServerExecutor().getOriginal();
+        SkillDataManager manager = container.getExecutor().getSkill(SkillSlots.WEAPON_PASSIVE).getDataManager();
         if(manager.hasData(SwordSoaringDatakeys.ARTIFACT_SPIRIT_ENTITY_ID)) {
             int vatanseverId = manager.getDataValue(SwordSoaringDatakeys.ARTIFACT_SPIRIT_ENTITY_ID);
             serverPlayer.serverLevel().sendParticles(EpicFightParticles.ENTITY_AFTER_IMAGE.get(), serverPlayer.getX(), serverPlayer.getY(), serverPlayer.getZ(), 1, serverPlayer.getId(), 1, 1, serverPlayer.getId());

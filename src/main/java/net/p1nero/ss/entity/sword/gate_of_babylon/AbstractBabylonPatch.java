@@ -28,8 +28,8 @@ public abstract class AbstractBabylonPatch<T extends BabylonEntity> extends Abst
      */
     @OnlyIn(Dist.CLIENT)
     @Override
-    public void postTickClient(EntityTickEvent.Post event) {
-        super.postTickClient(event);
+    public void postTickClient() {
+        super.postTickClient();
         if(!played){
             if(this.isLogicalClient() && this.getOwnerPatch() != null){
                 //排除其他玩家干扰

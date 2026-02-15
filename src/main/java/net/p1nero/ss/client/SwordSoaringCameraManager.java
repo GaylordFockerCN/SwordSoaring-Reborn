@@ -17,7 +17,7 @@ import net.p1nero.ss.SwordSoaringMod;
 import net.p1nero.ss.gameassets.SwordSoaringDatakeys;
 import net.p1nero.ss.gameassets.SwordSoaringSkillSlots;
 import yesman.epicfight.api.client.camera.EpicFightCameraAPI;
-import yesman.epicfight.api.client.event.types.BuildCameraTransform;
+import yesman.epicfight.api.client.event.types.camera.BuildCameraTransform;
 import yesman.epicfight.api.utils.math.MathUtils;
 import yesman.epicfight.api.utils.math.OpenMatrix4f;
 import yesman.epicfight.api.utils.math.Vec3f;

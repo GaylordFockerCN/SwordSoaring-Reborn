@@ -1,5 +1,6 @@
 package net.p1nero.ss.entity.vatansever;
 
+import net.minecraft.world.level.Level;
 import net.neoforged.neoforge.event.entity.EntityJoinLevelEvent;
 import net.p1nero.ss.entity.AbstractArtifactSpiritPatch;
 import net.p1nero.ss.gameassets.SwordSoaringDatakeys;
@@ -17,11 +18,11 @@ public class VatanseverEntityPatch extends AbstractArtifactSpiritPatch<Vatanseve
     }
 
     /**
-     * 刚加入时服务端调用playSync客户端会来不及播，不知为何WitherClone可以我不行。只能手动修
+     * 刚加入时服务端调用playSync客户端会来不及播，只能手动修
      */
     @Override
-    public void onJoinWorld(VatanseverEntity entity, EntityJoinLevelEvent event) {
-        super.onJoinWorld(entity, event);
+    public void onJoinWorld(VatanseverEntity entity, Level level, boolean worldgenSpawn) {
+        super.onJoinWorld(entity, level, worldgenSpawn);
         if(this.isLogicalClient()){
             this.getClientAnimator().playAnimation(VatanseverAnimations.VATANSEVER_INIT, 0.0F);
         }

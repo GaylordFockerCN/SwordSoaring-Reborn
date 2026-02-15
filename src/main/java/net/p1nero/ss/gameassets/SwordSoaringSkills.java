@@ -38,85 +38,85 @@ public class SwordSoaringSkills {
 
     public static DeferredHolder<Skill, SwordSoaringSkill> SWORD_SOARING_APPRENTICE = SwordSoaringSkills.REGISTRY.register("sword_soaring_apprentice", (key) ->
             SwordSoaringSkill.createSwordSoaringSkill(SwordSoaringSkill::new)
-                    .setFlyingAnimations(FlyAnimations.APPRENTICE_INIT, FlyAnimations.APPRENTICE_FLYING, FlyAnimations.APPRENTICE_SPEED_UP).build(key, SwordSoaringSkill.class));
+                    .setFlyingAnimations(FlyAnimations.APPRENTICE_INIT, FlyAnimations.APPRENTICE_FLYING, FlyAnimations.APPRENTICE_SPEED_UP).build(key));
 
     public static DeferredHolder<Skill, SwordSoaringSkill> SWORD_SOARING_EXPERT = SwordSoaringSkills.REGISTRY.register("sword_soaring_expert", (key) ->
             SwordSoaringSkill.createSwordSoaringSkill(SwordSoaringSkill::new)
                     .setFlyingAnimations(FlyAnimations.EXPERT_INIT, FlyAnimations.EXPERT_FLYING, FlyAnimations.EXPERT_SPEED_UP)
-                    .build(key, SwordSoaringSkill.class));
+                    .build(key));
 
     public static DeferredHolder<Skill, SwordSoaringSkill> SWORD_SOARING_MASTER = SwordSoaringSkills.REGISTRY.register("sword_soaring_master", (key) ->
             SwordSoaringSkill.createSwordSoaringSkill(SwordSoaringSkill::new)
                     .setFlyingAnimations(FlyAnimations.MASTER_INIT, FlyAnimations.MASTER_FLYING, FlyAnimations.MASTER_SPEED_UP)
-                    .build(key, SwordSoaringSkill.class));
+                    .build(key));
 
     public static DeferredHolder<Skill, SwordSoaringSkillElytra> SWORD_SOARING_ELYTRA_APPRENTICE = SwordSoaringSkills.REGISTRY.register("sword_soaring_elytra_apprentice", (key) ->
             SwordSoaringSkill.createSwordSoaringSkill(SwordSoaringSkillElytra::new)
                     .setFlyingAnimations(FlyAnimations.APPRENTICE_INIT, FlyAnimations.APPRENTICE_FLYING, FlyAnimations.APPRENTICE_SPEED_UP)
-                    .build(key, SwordSoaringSkillElytra.class));
+                    .build(key));
 
     public static DeferredHolder<Skill, SwordSoaringSkillElytra> SWORD_SOARING_ELYTRA_EXPERT = SwordSoaringSkills.REGISTRY.register("sword_soaring_elytra_expert", (key) ->
             SwordSoaringSkill.createSwordSoaringSkill(SwordSoaringSkillElytra::new)
                     .setFlyingAnimations(FlyAnimations.EXPERT_INIT, FlyAnimations.EXPERT_FLYING, FlyAnimations.EXPERT_SPEED_UP)
-                    .build(key, SwordSoaringSkillElytra.class));
+                    .build(key));
 
     public static DeferredHolder<Skill, SwordSoaringSkillElytra> SWORD_SOARING_ELYTRA_MASTER = SwordSoaringSkills.REGISTRY.register("sword_soaring_elytra_master", (key) ->
             SwordSoaringSkill.createSwordSoaringSkill(SwordSoaringSkillElytra::new)
                     .setFlyingAnimations(FlyAnimations.MASTER_INIT, FlyAnimations.MASTER_FLYING, FlyAnimations.MASTER_SPEED_UP)
-                    .build(key, SwordSoaringSkillElytra.class));
+                    .build(key));
 
     public static DeferredHolder<Skill, KillAuraSkill> KILL_AURA_1 = REGISTRY.register("kill_aura_1", (key) ->
             KillAuraSkill.createKillAuraBuilder(KillAuraSkill::new)
                     .setCreativeTab(SwordSoaringItems.DEFAULT_TAB.get())
                     .setPlayerSummonAnim(ScreenSwordAnimations.PLAYER_SUMMON_KILL_AURA_1)
                     .setSwordSummonAnim(ScreenSwordAnimations.KILL_AURA_1_SUMMON)
-                    .build(key, KillAuraSkill.class));
+                    .build(key));
 
     public static DeferredHolder<Skill, KillAuraSkill> KILL_AURA_2 = REGISTRY.register("kill_aura_2", (key) ->
             KillAuraSkill.createKillAuraBuilder(KillAuraSkill::new)
                     .setCreativeTab(SwordSoaringItems.DEFAULT_TAB.get())
                     .setPlayerSummonAnim(ScreenSwordAnimations.PLAYER_SUMMON_KILL_AURA_2)
                     .setSwordSummonAnim(ScreenSwordAnimations.KILL_AURA_2_SUMMON)
-                    .build(key, KillAuraSkill.class));
+                    .build(key));
 
     public static DeferredHolder<Skill, ScreenSwordSkill> SCREEN_SWORD = REGISTRY.register("screen_sword", (key) ->
             ScreenSwordSkill.createKillAuraBuilder(ScreenSwordSkill::new)
                     .setCreativeTab(SwordSoaringItems.DEFAULT_TAB.get())
                     .setPlayerSummonAnim(ScreenSwordAnimations.PLAYER_SUMMON_SCREEN_SWORD)
                     .setSwordSummonAnim(ScreenSwordAnimations.SCREEN_SWORD_SUMMON)
-                    .build(key, ScreenSwordSkill.class));
+                    .build(key));
 
     public static DeferredHolder<Skill, RainSwordSkill> RAIN_SWORD = REGISTRY.register("rain_sword", (key) ->
             RainSwordSkill.createBuilder(RainSwordSkill::new)
                     .setCreativeTab(SwordSoaringItems.DEFAULT_TAB.get())
                     .setCategory(SwordSoaringSkillCategories.SWORD_CONTROLLER)
                     .setResource(Skill.Resource.NONE)
-                    .build(key, RainSwordSkill.class));
+                    .build(key));
 
     public static DeferredHolder<Skill, GateOfBabylonSkill> GATE_OF_BABYLON = REGISTRY.register("babylon", (key) ->
             GateOfBabylonSkill.createBuilder(GateOfBabylonSkill::new)
                     .setCreativeTab(SwordSoaringItems.DEFAULT_TAB.get())
                     .setCategory(SwordSoaringSkillCategories.SWORD_CONTROLLER)
                     .setResource(Skill.Resource.NONE)
-                    .build(key, GateOfBabylonSkill.class));
+                    .build(key));
 
     public static DeferredHolder<Skill, WanJianGuiZongSkill> WAN_JIAN_GUI_ZONG = REGISTRY.register("wan_jian_gui_zong", (key) ->
             WanJianGuiZongSkill.createBuilder(WanJianGuiZongSkill::new)
                     .setCreativeTab(SwordSoaringItems.DEFAULT_TAB.get())
                     .setCategory(SwordSoaringSkillCategories.SWORD_CONTROLLER)
                     .setResource(Skill.Resource.NONE)
-                    .build(key, WanJianGuiZongSkill.class));
+                    .build(key));
     public static DeferredHolder<Skill, VatanseverWeaponInnateSkill> VATANSEVER_INNATE = REGISTRY.register("vatansever_innate", (key) ->
             ComboBasicAttack.createComboBasicAttack(VatanseverWeaponInnateSkill::new)
                     .setCombo(getRoot())
                     .setShouldDrawGui(true)
-                    .build(key, VatanseverWeaponInnateSkill.class));
+                    .build(key));
 
     public static DeferredHolder<Skill, VatanseverPassive> VATANSEVER_PASSIVE = REGISTRY.register("vatansever_passive", (key) ->
             Skill.createBuilder(VatanseverPassive::new)
                     .setCategory(SkillCategories.WEAPON_PASSIVE)
                     .setResource(Skill.Resource.NONE)
-                    .build(key, VatanseverPassive.class));
+                    .build(key));
 
     public static DeferredHolder<Skill, VatanseverDodgeSkill> VATANSEVER_DODGE = REGISTRY.register("vatansever_dodge", (key) ->
             VatanseverDodgeSkill.createDodgeBuilder(VatanseverDodgeSkill::new)
@@ -127,7 +127,7 @@ public class SwordSoaringSkills {
                             VatanseverAnimations.PLAYER_DODGE_R
                     )
                     .setCreativeTab(SwordSoaringItems.DEFAULT_TAB.get())
-                    .build(key, VatanseverDodgeSkill.class));
+                    .build(key));
 
     public static ComboNode getRoot() {
         ComboNode root = ComboNode.create();

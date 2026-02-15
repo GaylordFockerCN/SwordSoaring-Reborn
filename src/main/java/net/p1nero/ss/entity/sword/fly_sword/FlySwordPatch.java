@@ -35,8 +35,8 @@ public class FlySwordPatch extends AbstractArtifactSpiritPatch<FlySwordEntity> {
      */
     @OnlyIn(Dist.CLIENT)
     @Override
-    public void postTickClient(EntityTickEvent.Post event) {
-        super.postTickClient(event);
+    public void postTickClient() {
+        super.postTickClient();
         if (!played) {
             if (this.isLogicalClient() && this.getOwnerPatch() != null) {
                 if(!this.getOwnerPatch().getOriginal().equals(Minecraft.getInstance().player)){

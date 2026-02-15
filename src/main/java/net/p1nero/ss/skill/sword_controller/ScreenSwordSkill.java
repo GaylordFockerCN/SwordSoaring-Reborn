@@ -8,14 +8,15 @@ import net.neoforged.api.distmarker.OnlyIn;
 import net.p1nero.ss.entity.sword.screen_sword.ScreenSwordEntity;
 import net.p1nero.ss.gameassets.SwordSoaringDatakeys;
 import net.p1nero.ss.utils.ItemUtils;
-import yesman.epicfight.api.neoevent.playerpatch.TakeDamageEvent;
+import yesman.epicfight.api.event.EntityEventListener;
+import yesman.epicfight.api.event.EpicFightEventHooks;
+import yesman.epicfight.api.event.types.entity.TakeDamageEvent;
 import yesman.epicfight.api.utils.AttackResult;
 import yesman.epicfight.client.gui.BattleModeGui;
 import yesman.epicfight.particle.HitParticleType;
 import yesman.epicfight.registry.entries.EpicFightParticles;
 import yesman.epicfight.registry.entries.EpicFightSounds;
 import yesman.epicfight.skill.SkillContainer;
-import yesman.epicfight.skill.SkillEvent;
 import yesman.epicfight.world.capabilities.entitypatch.player.ServerPlayerPatch;
 import yesman.epicfight.world.damagesource.EpicFightDamageSource;
 import yesman.epicfight.world.damagesource.StunType;
@@ -43,20 +44,21 @@ public class ScreenSwordSkill extends KillAuraSkill {
     }
 
 
-    @SkillEvent(side = SkillEvent.Side.SERVER)
     public void onHurtEventPost(TakeDamageEvent.Income hurtEvent, SkillContainer container) {
-        if(hurtEvent.getPlayerPatch().getOriginal().level().getEntity(container.getDataManager().getDataValue(SwordSoaringDatakeys.SWORD_ENTITY_ID)) instanceof ScreenSwordEntity screenSwordEntity){
+        if(container.getExecutor().getOriginal().level().getEntity(container.getDataManager().getDataValue(SwordSoaringDatakeys.SWORD_ENTITY_ID)) instanceof ScreenSwordEntity screenSwordEntity){
             int protectCountLeft = container.getDataManager().getDataValue(SwordSoaringDatakeys.PROTECT_COUNT);
             if(protectCountLeft <= 0) {
                 return;
             }
             container.getDataManager().setDataSync(SwordSoaringDatakeys.PROTECT_COUNT, protectCountLeft - 1);
             if((protectCountLeft - 1) % (maxProtectCount / 6) == 0){
-                hurtEvent.getPlayerPatch().playSound(EpicFightSounds.NEUTRALIZE_MOBS.get(), 0.0F, 0.0F);
-                hurtEvent.getPlayerPatch().getOriginal().heal(healCount);
+                container.getExecutor().playSound(EpicFightSounds.NEUTRALIZE_MOBS.get(), 0.0F, 0.0F);
+                container.getExecutor().getOriginal().heal(healCount);
             } else {
-                hurtEvent.getPlayerPatch().playSound(EpicFightSounds.CLASH.get(), 0.0F, 0.0F);
-                EpicFightParticles.HIT_BLUNT.get().spawnParticleWithArgument(hurtEvent.getPlayerPatch().getOriginal().serverLevel(), HitParticleType.FRONT_OF_EYES, HitParticleType.ZERO, hurtEvent.getPlayerPatch().getOriginal(), hurtEvent.getDamageSource().getDirectEntity());
+                container.getExecutor().playSound(EpicFightSounds.CLASH.get(), 0.0F, 0.0F);
+                if(!container.getExecutor().isLogicalClient()) {
+                    EpicFightParticles.HIT_BLUNT.get().spawnParticleWithArgument(container.getServerExecutor().getOriginal().serverLevel(), HitParticleType.FRONT_OF_EYES, HitParticleType.ZERO, container.getExecutor().getOriginal(), hurtEvent.getDamageSource().getDirectEntity());
+                }
             }
             //免疫硬直
             if(hurtEvent.getDamageSource() instanceof EpicFightDamageSource epicFightDamageSource){
@@ -67,13 +69,12 @@ public class ScreenSwordSkill extends KillAuraSkill {
             if(!hurtEvent.getDamageSource().isDirect()){
                 hurtEvent.setResult(AttackResult.ResultType.MISSED);
                 hurtEvent.setParried(true);
-                hurtEvent.setCanceled(true);
             } else {
                 //反伤（减伤有bug，setAmount无效，额外写太麻烦了）
                 Entity entity = hurtEvent.getDamageSource().getEntity();
                 if(entity != null){
                     //难道没有直接获取某个武器的伤害的办法吗。。
-                    double total = ItemUtils.getItemAttackDamage(hurtEvent.getPlayerPatch().getOriginal(), screenSwordEntity.getItemStack(null));
+                    double total = ItemUtils.getItemAttackDamage(container.getExecutor().getOriginal(), screenSwordEntity.getItemStack(null));
                     //反击伤害不超过武器最大伤害
                     float counterattackDamage = hurtEvent.getDamage() * 0.5F > total ? (float) total : hurtEvent.getDamage() * 0.5F;
                     hurtEvent.getDamageSource().getEntity().hurt(hurtEvent.getDamageSource(), counterattackDamage);
@@ -85,6 +86,14 @@ public class ScreenSwordSkill extends KillAuraSkill {
                 container.getExecutor().getOriginal().setGlowingTag(false);
             }
         }
+    }
+
+    @Override
+    public void onInitiate(SkillContainer container, EntityEventListener eventListener) {
+        super.onInitiate(container, eventListener);
+        eventListener.registerEvent(EpicFightEventHooks.Entity.TAKE_DAMAGE_INCOME, event -> {
+            onHurtEventPost(event, container);
+        }, this);
     }
 
     @Override
