@@ -26,6 +26,8 @@ import net.p1nero.ss.item.SwordSoaringItems;
 import org.jetbrains.annotations.Nullable;
 import yesman.epicfight.api.animation.AnimationManager;
 import yesman.epicfight.api.animation.types.StaticAnimation;
+import yesman.epicfight.api.client.camera.EpicFightCameraAPI;
+import yesman.epicfight.api.utils.math.MathUtils;
 import yesman.epicfight.client.events.engine.ControlEngine;
 import yesman.epicfight.client.gui.BattleModeGui;
 import yesman.epicfight.client.world.capabilites.entitypatch.player.LocalPlayerPatch;
@@ -199,7 +201,11 @@ public class SwordSoaringSkill extends Skill {
             if (container.getDataManager().getDataValue(SwordSoaringDatakeys.FLYING.get()) && container.getExecutor().hasStamina(consumption + 0.1F) && SwordSoaringMod.isValidSword(container.getExecutor().getOriginal().getMainHandItem())) {
                 LocalPlayer localPlayer = ((LocalPlayer) container.getExecutor().getOriginal());
                 Vec3 view = localPlayer.getViewVector(1.0F).normalize();
-
+                if(EpicFightCameraAPI.getInstance().isTPSMode()) {
+                    view = MathUtils.getVectorForRotation(EpicFightCameraAPI.getInstance().getCameraXRot(), EpicFightCameraAPI.getInstance().getCameraYRot());
+                    localPlayer.setYRot(EpicFightCameraAPI.getInstance().getCameraYRot());
+                    localPlayer.yRotO = EpicFightCameraAPI.getInstance().getCameraYRotO();
+                }
                 Vec3 accelerationSpeed = view.scale(speed);
                 Vec3 normalSpeed = accelerationSpeed.scale(0.33F);
                 boolean accelerating = SwordSoaringKeyMappings.ACCELERATION.isDown();

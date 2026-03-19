@@ -1,5 +1,6 @@
 package net.p1nero.ss.skill.sword_soaring;
 
+import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.phys.Vec3;
@@ -8,6 +9,8 @@ import net.p1nero.ss.client.keymapping.SwordSoaringKeyMappings;
 import net.p1nero.ss.gameassets.SwordSoaringDatakeys;
 import yesman.epicfight.api.animation.AnimationManager;
 import yesman.epicfight.api.animation.types.StaticAnimation;
+import yesman.epicfight.api.client.camera.EpicFightCameraAPI;
+import yesman.epicfight.api.utils.math.MathUtils;
 import yesman.epicfight.skill.SkillContainer;
 import yesman.epicfight.world.capabilities.entitypatch.player.PlayerPatch;
 import yesman.epicfight.world.capabilities.entitypatch.player.ServerPlayerPatch;
@@ -43,6 +46,13 @@ public class SwordSoaringSkillElytra extends SwordSoaringSkill {
                 
                 if (accelerating != container.getDataManager().getDataValue(SwordSoaringDatakeys.SPEED_UP.get())) {
                     container.getDataManager().setDataSync(SwordSoaringDatakeys.SPEED_UP.get(), accelerating);
+                }
+                LocalPlayer localPlayer = ((LocalPlayer) container.getExecutor().getOriginal());
+                if(EpicFightCameraAPI.getInstance().isTPSMode()) {
+                    localPlayer.setYRot(EpicFightCameraAPI.getInstance().getCameraYRot());
+                    localPlayer.yRotO = EpicFightCameraAPI.getInstance().getCameraYRotO();
+                    localPlayer.setXRot(EpicFightCameraAPI.getInstance().getCameraXRot());
+                    localPlayer.xRotO = EpicFightCameraAPI.getInstance().getCameraXRotO();
                 }
             }
         } else {
